@@ -1,0 +1,808 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ratsakten Bad Waldsee</title>
+<meta name="description" content="Maschinelle Auswertung der öffentlich zugänglichen Sitzungsunterlagen der Stadt Bad Waldsee.">
+<style>/* Selbst ausgelieferte Schriften. Kein Abruf bei Dritten, damit beim Besuch
+   keine IP-Adresse an einen fremden Server geht.  wird beim Erzeugen
+   durch den relativen Weg zum docs-Verzeichnis ersetzt. */
+@font-face{
+  font-family:'Archivo';font-style:normal;font-weight:500;font-display:swap;
+  src:url(fonts/Archivo-500-latin-ext.woff2) format('woff2');
+  unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face{
+  font-family:'Archivo';font-style:normal;font-weight:500;font-display:swap;
+  src:url(fonts/Archivo-500-latin.woff2) format('woff2');
+  unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face{
+  font-family:'Archivo';font-style:normal;font-weight:600;font-display:swap;
+  src:url(fonts/Archivo-600-latin-ext.woff2) format('woff2');
+  unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face{
+  font-family:'Archivo';font-style:normal;font-weight:600;font-display:swap;
+  src:url(fonts/Archivo-600-latin.woff2) format('woff2');
+  unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face{
+  font-family:'Archivo';font-style:normal;font-weight:700;font-display:swap;
+  src:url(fonts/Archivo-700-latin-ext.woff2) format('woff2');
+  unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face{
+  font-family:'Archivo';font-style:normal;font-weight:700;font-display:swap;
+  src:url(fonts/Archivo-700-latin.woff2) format('woff2');
+  unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face{
+  font-family:'Archivo';font-style:normal;font-weight:800;font-display:swap;
+  src:url(fonts/Archivo-800-latin-ext.woff2) format('woff2');
+  unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face{
+  font-family:'Archivo';font-style:normal;font-weight:800;font-display:swap;
+  src:url(fonts/Archivo-800-latin.woff2) format('woff2');
+  unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face{
+  font-family:'IBM Plex Mono';font-style:normal;font-weight:400;font-display:swap;
+  src:url(fonts/IBMPlexMono-400-latin-ext.woff2) format('woff2');
+  unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face{
+  font-family:'IBM Plex Mono';font-style:normal;font-weight:400;font-display:swap;
+  src:url(fonts/IBMPlexMono-400-latin.woff2) format('woff2');
+  unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face{
+  font-family:'IBM Plex Mono';font-style:normal;font-weight:500;font-display:swap;
+  src:url(fonts/IBMPlexMono-500-latin-ext.woff2) format('woff2');
+  unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face{
+  font-family:'IBM Plex Mono';font-style:normal;font-weight:500;font-display:swap;
+  src:url(fonts/IBMPlexMono-500-latin.woff2) format('woff2');
+  unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face{
+  font-family:'IBM Plex Mono';font-style:normal;font-weight:600;font-display:swap;
+  src:url(fonts/IBMPlexMono-600-latin-ext.woff2) format('woff2');
+  unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face{
+  font-family:'IBM Plex Mono';font-style:normal;font-weight:600;font-display:swap;
+  src:url(fonts/IBMPlexMono-600-latin.woff2) format('woff2');
+  unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face{
+  font-family:'IBM Plex Serif';font-style:italic;font-weight:400;font-display:swap;
+  src:url(fonts/IBMPlexSerif-400i-latin-ext.woff2) format('woff2');
+  unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face{
+  font-family:'IBM Plex Serif';font-style:italic;font-weight:400;font-display:swap;
+  src:url(fonts/IBMPlexSerif-400i-latin.woff2) format('woff2');
+  unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face{
+  font-family:'IBM Plex Serif';font-style:normal;font-weight:400;font-display:swap;
+  src:url(fonts/IBMPlexSerif-400-latin-ext.woff2) format('woff2');
+  unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face{
+  font-family:'IBM Plex Serif';font-style:normal;font-weight:400;font-display:swap;
+  src:url(fonts/IBMPlexSerif-400-latin.woff2) format('woff2');
+  unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face{
+  font-family:'IBM Plex Serif';font-style:normal;font-weight:500;font-display:swap;
+  src:url(fonts/IBMPlexSerif-500-latin-ext.woff2) format('woff2');
+  unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face{
+  font-family:'IBM Plex Serif';font-style:normal;font-weight:500;font-display:swap;
+  src:url(fonts/IBMPlexSerif-500-latin.woff2) format('woff2');
+  unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face{
+  font-family:'IBM Plex Serif';font-style:normal;font-weight:600;font-display:swap;
+  src:url(fonts/IBMPlexSerif-600-latin-ext.woff2) format('woff2');
+  unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face{
+  font-family:'IBM Plex Serif';font-style:normal;font-weight:600;font-display:swap;
+  src:url(fonts/IBMPlexSerif-600-latin.woff2) format('woff2');
+  unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* Das gemeinsame Fundament aller Seiten dieser Website.
+
+   Farben, Grundschrift, Markenleiste, Seitenkopf und Fuß standen bis hierher
+   vierfach im Projekt — in ausgabe.css, startseite.css, src/report.html und
+   verstreut in den Bauskripten. Vier Kopien derselben Regel laufen zuverlässig
+   auseinander: Die Überschrift war je nach Seite 40px, 48px oder 58px groß, die
+   Kategoriezeile mal blau, mal orange, und der Report setzte seine
+   Überschriften in einer anderen Schrift als alle übrigen Seiten.
+
+   Diese Datei ist deshalb die einzige Quelle für alles, was auf jeder Seite
+   gleich aussehen muss. Seitenspezifisches gehört in ausgabe.css,
+   startseite.css oder in den Kopf der jeweiligen Seite — nicht hierher. */
+
+/* ---------- Farben und Maße ---------- */
+/* Bewusst einfarbig dunkel — keine Themenumschaltung. */
+:root{
+  color-scheme:dark;
+  --plane:#0B0D0F;
+  --surface:#111316;
+  --surface-2:#171A1E;
+  --ink:#EDF1F5;
+  --ink-2:#B4BDC7;
+  --muted:#7F8A96;
+  --rule:#272C32;
+  --grid:#22262B;
+  --s1:#3987e5;              /* Hinweis, Verweis, Zahl */
+  /* Der zweite Akzent ist derzeit unbenutzt. Er stand frueher an Rubriken und
+     Erkenntnissen; dort gelesen wirkten Auffaelligkeiten wie Warnungen, und
+     genau das sollen sie nicht. Er bleibt im Farbsatz, weil er zur Marke
+     gehoert — wer ihn wieder einsetzt, soll es bewusst tun. */
+  --s2:#d95926;
+  --flag:#E08163;            /* KI-Deutung — auffällig, aber kein Alarm */
+  --flag-bg:rgba(224,129,99,.10);
+  --bar-bg:#15181C;
+  --bar-ink:#D6DEE7;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 4px 16px rgba(0,0,0,.3);
+  --serif:"IBM Plex Serif",Georgia,serif;
+  --sans:Archivo,"Helvetica Neue",Arial,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,monospace;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--plane);color:var(--ink);
+  font-family:var(--serif);
+  font-size:17.5px;line-height:1.66;-webkit-font-smoothing:antialiased;
+}
+::selection{background:rgba(57,135,229,.3)}
+
+/* Nichts darf die Seite in die Breite ziehen. Lange Vorlagennummern, Adressen
+   und Dateinamen brechen um, statt ueber den Rand zu laufen — auf einem
+   Telefon entscheidet das darueber, ob die Seite lesbar ist. */
+body{overflow-wrap:break-word}
+img,svg,video,iframe{max-width:100%;height:auto}
+pre,code{max-width:100%;overflow-x:auto}
+/* Verweise auf Unterlagen tragen den Dateinamen aus dem Ratsinformationssystem,
+   und der kennt keine Trennstellen: „Satzung_Offenhalten_der_Einzelhandels-
+   geschaefte_..." ist 428 Pixel breit und sprengte auf dem Telefon die Seite.
+   `break-word` reicht dafuer nicht — es aendert die Mindestbreite eines
+   Flex-Elements nicht, und genau die bestimmt hier die Breite. `anywhere`
+   tut es. */
+a.doc,.unterlagen a,.unterlagen{min-width:0;overflow-wrap:anywhere}
+
+/* Sprungziele nicht bündig an den Fensterrand setzen: Wer aus der Suche oder
+   der Sprungleiste kommt, soll die Überschrift über dem Ziel noch sehen. */
+[id]{scroll-margin-top:18px}
+
+/* Zwei Breiten, nach Anlage der Seite — nicht nach Zufall: 1020px für die
+   zweispaltigen Seiten (Randspalte plus Textkörper), 880px für die
+   einspaltigen Lese- und Nachschlageseiten. Die Lesbarkeit hängt ohnehin nicht
+   an der Containerbreite, sondern an der Zeilenlänge — dafür steht auf den
+   Absätzen max-width:62ch. */
+.wrap{max-width:1020px;margin:0 auto;padding:0 24px}
+body.lesen .wrap{max-width:880px}
+
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+/* Nur fuer Vorleseprogramme sichtbar.
+
+   `position:absolute` ohne positionierten Vorfahren bezieht sich auf das
+   Dokument: Der Text sitzt dann an seiner statischen Stelle und entkommt jedem
+   Rollbereich darum herum. In der Zeitleiste der Startseite lag diese Stelle
+   bei 785 Pixeln — und obwohl der Text nur einen Pixel breit ist, zog er die
+   ganze Seite auf diese Breite. Gemessen: Dokumentbreite 771 statt 492.
+   Deshalb `margin:-1px` und ein positionierter Vorfahr ueberall dort, wo `.sr`
+   benutzt wird. */
+.sr{
+  position:absolute;width:1px;height:1px;padding:0;margin:-1px;border:0;
+  overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap;
+}
+
+a:focus-visible,button:focus-visible,summary:focus-visible,input:focus-visible{
+  outline:2px solid var(--s1);outline-offset:2px;
+}
+
+/* ---------- Markenleiste mit Navigation ---------- */
+.brandbar{
+  background:var(--bar-bg);color:var(--bar-ink);border-bottom:1px solid var(--rule);
+  font-family:var(--mono);font-size:11.5px;
+  letter-spacing:.08em;text-transform:uppercase;
+}
+.brandbar .wrap{
+  display:flex;flex-wrap:wrap;align-items:center;gap:6px 20px;
+  justify-content:space-between;padding:10px 24px;min-width:0;
+}
+.brandbar a{color:var(--s1);text-decoration:none}
+.brandbar a:hover{text-decoration:underline}
+.brandbar b{font-weight:600;letter-spacing:.1em}
+.brandbar nav{display:flex;flex-wrap:wrap;align-items:center;gap:4px 14px;min-width:0}
+.brandbar nav a{color:var(--bar-ink);text-decoration:none;opacity:.85}
+.brandbar nav a:hover{color:var(--s1);opacity:1;text-decoration:underline}
+.brandbar nav a[aria-current="page"]{color:var(--s1);opacity:1;font-weight:600}
+.brandbar nav span[aria-hidden]{opacity:.35}
+/* Alle Bereiche bleiben auch auf dem Telefon sichtbar, ohne seitliches
+   Schieben. Ganze Links umbrechen lassen; die Trennstriche entfallen, damit
+   sie nicht allein am Zeilenanfang stehen. Vierundvierzig Pixel Hoehe ist das
+   Mass, das sich mit dem Daumen zuverlaessig treffen laesst. */
+@media (max-width:620px){
+  .brandbar nav{
+    flex-basis:100%;gap:0 8px;
+  }
+  .brandbar nav a{
+    display:flex;align-items:center;min-height:44px;padding:8px;
+    max-width:100%;font-size:13px;
+  }
+  .brandbar nav span[aria-hidden]{display:none}
+}
+
+/* ---------- Seitenkopf ----------
+   Jede Seite trägt denselben Kopf: Kategorie, Titel, Vorspann, Kennzahlenzeile.
+   Genau in dieser Reihenfolge und in diesen Größen — hier und nirgends sonst. */
+header{padding:52px 0 0}
+.eyebrow{
+  font-family:var(--mono);font-size:11px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--ink-2);margin:0 0 10px;
+}
+h1{
+  font-family:var(--sans);font-weight:700;
+  font-size:clamp(30px,4vw,40px);line-height:1.1;letter-spacing:-.02em;
+  margin:0 0 8px;text-wrap:balance;
+}
+.lede{
+  margin:14px 0 0;font-size:18px;line-height:1.55;color:var(--ink-2);
+  max-width:62ch;text-wrap:pretty;
+}
+
+/* Die Kennzahlenzeile schließt jeden Seitenkopf ab. Sie steht waagerecht, damit
+   die Breite genutzt wird — untereinander gestapelt schob sie den Inhalt unter
+   die Falz. */
+.issueline{
+  display:flex;flex-wrap:wrap;gap:8px 24px;margin:26px 0 0;padding:13px 0;
+  border-top:2px solid var(--ink);border-bottom:1px solid var(--rule);
+  font-family:var(--mono);font-size:11.5px;
+  letter-spacing:.07em;text-transform:uppercase;color:var(--muted);
+}
+.issueline b{color:var(--ink);font-weight:600}
+
+/* Der erste Block nach dem Seitenkopf braucht Luft, und zwar überall gleich
+   viel. Abschnitte und Artikel bringen eigene Polsterung mit; Überschriften und
+   Absätze nicht — die klebten unter der Kennzahlenzeile, als gehörten sie noch
+   dazu. Die Klassenselektoren der Bausteine kommen aus später geladenen
+   Vorlagen, deshalb hier die genauere Auszeichnung. */
+header + h2,header + h3,header + p,header + ol,header + ul,
+header + h2.headline,header + .sprungmarken,header + .suchfeld,
+header + .kasten,header + .gremienzeile{margin-top:32px}
+
+/* ---------- Herkunft einer Aussage ----------
+   Drei Stufen, auf jeder Seite dieselben: belegt, regelbasiert, gedeutet.
+
+   Vorher ein rechteckiger Rahmen in voller Akzentfarbe — das las sich wie ein
+   Eingabefeld oder eine Warnung, obwohl die Marke nur sagt, woher eine Aussage
+   kommt. Jetzt eine kleine Kapsel: getönte Fläche, Haarlinie statt Vollton, und
+   ein Punkt trägt die Farbe, nicht die ganze Schrift. */
+.herkunft{
+  display:inline-flex;align-items:center;gap:6px;margin:0 0 10px;
+  padding:3px 10px 3px 8px;border-radius:999px;border:1px solid transparent;
+  font-family:var(--mono);font-size:9.5px;font-style:normal;line-height:1.6;
+  letter-spacing:.11em;text-transform:uppercase;color:var(--ink-2);
+  vertical-align:middle;
+}
+.herkunft::before{
+  content:"";flex:0 0 auto;width:5px;height:5px;border-radius:50%;
+  background:currentColor;
+}
+.herkunft.ki{background:rgba(224,129,99,.10);border-color:rgba(224,129,99,.30)}
+.herkunft.ki::before{background:var(--flag)}
+.herkunft.regel{background:rgba(57,135,229,.10);border-color:rgba(57,135,229,.30)}
+.herkunft.regel::before{background:var(--s1)}
+.herkunft.beleg,.herkunft.geprueft{background:var(--surface);border-color:var(--rule)}
+.herkunft.beleg::before,.herkunft.geprueft::before{background:var(--muted)}
+
+/* ---------- Fuß ---------- */
+footer{background:var(--bar-bg);border-top:1px solid var(--rule);padding:32px 0;margin-top:48px}
+footer .wrap{display:flex;flex-wrap:wrap;gap:12px 28px;justify-content:space-between;align-items:baseline}
+footer p{
+  margin:0;font-family:var(--mono);font-size:11.5px;letter-spacing:.05em;
+  color:var(--muted);max-width:none;
+}
+footer .disclaimer{
+  font-family:var(--serif);font-size:12px;font-style:italic;letter-spacing:0;
+  color:var(--muted);
+}
+footer .brand{font-size:12.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--bar-ink);font-weight:600}
+footer a{color:var(--s1);text-decoration:none}
+footer a:hover{text-decoration:underline}
+/* Die Seiten sind lang. Wer unten ankommt, soll nicht zurückscrollen müssen. */
+footer nav{
+  flex-basis:100%;order:-1;display:flex;flex-wrap:wrap;gap:6px 16px;
+  padding-bottom:14px;margin-bottom:2px;border-bottom:1px solid var(--rule);
+  font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;
+}
+footer nav a{color:var(--bar-ink);opacity:.85}
+footer nav a:hover{color:var(--s1);opacity:1}
+footer nav span[aria-hidden]{opacity:.35}
+
+/* ---------- Zurueck nach oben ----------
+   Die Seiten sind lang; der Weg zur Menueleiste soll nicht am Scrollrad
+   haengen. Klein, zurueckhaltend, immer an derselben Stelle. Wo der Browser
+   scrollgesteuerte Animationen kennt, erscheint der Knopf erst nach der ersten
+   Bildschirmhoehe; sonst steht er von Anfang an da. */
+.hoch{
+  position:fixed;right:18px;bottom:18px;z-index:20;
+  display:grid;place-items:center;width:38px;height:38px;border-radius:50%;
+  border:1px solid var(--rule);background:var(--bar-bg);
+  color:var(--muted);text-decoration:none;font-size:15px;line-height:1;opacity:.7;
+  transition:opacity .15s,color .15s,border-color .15s;
+}
+.hoch:hover{opacity:1;color:var(--s1);border-color:var(--s1)}
+@supports (animation-timeline:scroll()){
+  .hoch{
+    opacity:0;visibility:hidden;
+    animation:hoch-ein linear both;animation-timeline:scroll();
+    animation-range:120px 420px;
+  }
+  @keyframes hoch-ein{to{opacity:.7;visibility:visible}}
+}
+
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *{transition-duration:.01ms !important;animation-duration:.01ms !important}
+}
+
+/* ---------- Druck ----------
+   Gemeinderäte drucken Sitzungsunterlagen. Auf Papier ist der dunkle Grund
+   weder lesbar noch zumutbar; Navigation und Flächen entfallen, Verweise auf
+   fremde Server werden ausgeschrieben, damit sie auf dem Ausdruck auffindbar
+   bleiben. */
+@media print{
+  :root{
+    --plane:#fff;--surface:#fff;--surface-2:#f4f4f4;--ink:#000;--ink-2:#222;
+    --muted:#555;--rule:#bbb;--grid:#ddd;--shadow:none;--bar-bg:#fff;--bar-ink:#000;
+  }
+  body{font-size:10.5pt;line-height:1.45}
+  .brandbar,footer nav,.sprungmarken,.zeitleiste,.hoch{display:none}
+  footer{border-top:1px solid var(--rule);margin-top:24px;padding:12px 0}
+  header{padding-top:0}
+  a{color:#000;text-decoration:none}
+  a[href^="http"]::after{content:" (" attr(href) ")";font-size:8pt;color:#555;word-break:break-all}
+  article,section,li,tr{break-inside:avoid}
+  h1,h2,h3{break-after:avoid}
+}
+
+/* Die Startseite.
+
+   Voraussetzung ist basis.css — dort stehen Farben, Grundschrift,
+   Markenleiste, Seitenkopf und Fuß. Hier steht nur, was die Startseite
+   zusätzlich braucht: Kennzahlenkacheln, Einstiegskarten, Zeitleiste und die
+   Liste der nächsten Termine.
+
+   Der Seitenkopf schließt hier mit den Kacheln ab, wo die übrigen Seiten ihre
+   Kennzahlenzeile tragen — dieselbe Rolle, der Übersicht wegen als Raster. */
+
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:1px;
+  background:var(--rule);border:1px solid var(--rule);margin:34px 0 0;box-shadow:var(--shadow)}
+.tile{background:var(--surface);padding:16px 18px}
+.tile .v{font-family:var(--sans);font-weight:700;font-size:30px;line-height:1;
+  letter-spacing:-.025em;font-variant-numeric:tabular-nums;display:block}
+.tile .k{font-family:var(--mono);font-size:10.5px;line-height:1.45;
+  color:var(--muted);display:block;margin-top:8px}
+
+section{padding:48px 0;border-bottom:1px solid var(--rule)}
+h2{font-family:var(--sans);font-weight:700;font-size:26px;letter-spacing:-.02em;margin:0 0 16px}
+p{margin:0 0 16px;max-width:66ch}
+a{color:var(--s1)}
+
+.karten{display:grid;gap:16px;margin:24px 0 0}
+.karte{display:block;padding:22px 24px;background:var(--surface);border:1px solid var(--rule);
+  border-left:3px solid var(--s1);text-decoration:none;color:inherit;box-shadow:var(--shadow);
+  transition:border-left-color .15s,transform .15s}
+/* Beim Ueberfahren heller werden, nicht die Farbe wechseln: Ein Wechsel ins
+   Rotorange sah aus, als stimme mit dem Ziel etwas nicht. */
+.karte:hover{border-left-color:#649fee;background:var(--surface-2);transform:translateX(2px)}
+.karte .art{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--muted);margin:0 0 7px}
+.karte h3{font-family:var(--sans);font-weight:700;font-size:21px;margin:0 0 8px;
+  letter-spacing:-.015em;color:var(--ink)}
+.karte p{margin:0;font-size:15.5px;color:var(--ink-2);max-width:60ch}
+.karte .meta{font-family:var(--mono);font-size:11px;color:var(--muted);margin-top:10px}
+
+ul.plain{padding-left:20px;font-size:16px;color:var(--ink-2)}
+ul.plain li{margin-bottom:8px;max-width:66ch}
+
+/* Ein Hinweis ist eine Auskunft, keine Warnung — deshalb die ruhige Flaeche
+   der Seite und die Infofarbe, kein Signalton. */
+.hinweis{margin:24px 0 0;padding:20px 22px;background:var(--surface);
+  border-left:3px solid var(--s1)}
+.hinweis .lab{font-family:var(--mono);font-size:11px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--s1);margin:0 0 8px}
+.hinweis p{margin:0;font-size:15.5px;color:var(--ink-2)}
+.hinweis p + p{margin-top:9px}
+
+/* ---------- Zeitleiste: eine Zelle je Kalenderwoche ----------
+   Sequenzielle Faerbung, ein Farbton, vier Stufen. Die Stufen sind gegen den
+   Seitengrund geprueft: alle halten mindestens 3:1 Kontrast, damit auch eine
+   einzelne Sitzung als anklickbare Flaeche erkennbar bleibt.                */
+/* `position:relative` haelt die Vorlesetexte der Wochenzellen im Rollbereich;
+   ohne das beziehen sie sich auf das Dokument und weiten die ganze Seite. */
+.zeitleiste{position:relative;overflow-x:auto;padding:4px 0 2px;margin:18px 0 10px}
+.jahrzeile{display:flex;align-items:center;gap:12px;margin-bottom:5px}
+.jahrzeile .jahr{
+  flex:0 0 auto;width:34px;font-family:var(--mono);
+  font-size:11px;letter-spacing:.08em;color:var(--muted);
+}
+.wochen{display:flex;gap:3px}
+.w{
+  display:block;position:relative;width:11px;height:11px;border-radius:2px;
+  flex:0 0 auto;background:transparent;text-decoration:none;
+}
+.w.leer{box-shadow:inset 0 0 0 1px var(--rule)}
+.w.s1{background:#31649f}
+.w.s2{background:#4581cd}
+.w.s3{background:#649fee}
+.w.s4{background:#a3cdf7}
+a.w:hover{outline:2px solid var(--ink);outline-offset:1px}
+a.w:focus-visible{outline:2px solid var(--ink);outline-offset:1px}
+.skala{
+  display:flex;align-items:center;gap:6px;margin:2px 0 0;
+  font-family:var(--mono);font-size:11px;
+  letter-spacing:.08em;text-transform:uppercase;color:var(--muted);
+}
+.skala .trenn{opacity:.5;margin:0 2px}
+.skala a{color:var(--s1);text-decoration:none}
+.skala a:hover{text-decoration:underline}
+
+/* Kopfzeile der Zeitleiste: jede fuenfte Kalenderwoche beschriftet. Die
+   leeren Spalten halten den Platz, damit jede Zahl ueber ihrer Woche steht;
+   die Beschriftung darf nach rechts ueberstehen, ohne das Raster zu dehnen. */
+.jahrzeile.kopf{margin-bottom:3px}
+.jahrzeile.kopf .jahr{color:var(--muted);opacity:.7}
+.kw{
+  display:block;width:11px;flex:0 0 auto;position:relative;
+  font-family:var(--mono);font-size:10px;line-height:1.2;
+  color:var(--muted);overflow:visible;white-space:nowrap;
+}
+
+/* ---------- Was als Naechstes ansteht ----------
+   Zeilen und Tagesordnung kommen aus termine.css, gemeinsam mit der
+   Terminseite. Hier steht nur die Umrandung der Liste. */
+ol.termine{list-style:none;margin:20px 0 12px;padding:0}
+ol.termine > li{padding:14px 0 16px;border-top:1px solid var(--rule)}
+ol.termine > li:last-child{border-bottom:1px solid var(--rule)}
+
+.fussnote{
+  margin:14px 0 0;font-size:14px;line-height:1.6;color:var(--muted);max-width:62ch;
+}
+
+/* Sitzungstermine — auf der Startseite und auf der Terminseite.
+
+   Beide zeigen dieselbe Sache: Datum, Gremium, aufklappbare Tagesordnung. Bis
+   hierher waren die Regeln dafür zweimal geschrieben, in leicht verschiedenen
+   Größen — dieselbe Sitzung sah auf den beiden Seiten unterschiedlich aus. */
+
+/* Eine Terminzeile: Wann, wer, und was daraus geworden ist. */
+.wann{
+  font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--muted);margin:0 0 3px;
+}
+.uhr{margin-left:10px}
+.bald{margin-left:10px;color:var(--s1)}
+.gremium{margin:0 0 8px;font-size:16.5px;color:var(--ink)}
+.zustand{
+  font-family:var(--mono);font-size:11px;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--muted);
+}
+.zustand a{color:var(--s1);text-decoration:none}
+.zustand a:hover{text-decoration:underline}
+
+/* Die Tagesordnung steht zugeklappt da: Wer die Liste durchsieht, will die
+   Termine sehen; wer einen Termin prüft, klappt ihn auf. Ohne JavaScript. */
+details.agenda{margin-top:7px}
+details.agenda > summary{
+  cursor:pointer;list-style:none;display:inline-flex;align-items:center;gap:7px;
+  font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--s1);
+}
+details.agenda > summary::-webkit-details-marker{display:none}
+details.agenda > summary::before{content:"\25B8";font-size:13px}
+details.agenda[open] > summary::before{content:"\25BE"}
+details.agenda > summary:hover{text-decoration:underline}
+details.agenda .quelle{
+  margin:10px 0 0;font-family:var(--mono);font-size:11px;
+  letter-spacing:.06em;text-transform:uppercase;
+}
+details.agenda .quelle a{color:var(--s1);text-decoration:none}
+details.agenda .quelle a:hover{text-decoration:underline}
+p.agenda.offen{
+  margin:0;font-family:var(--mono);font-size:11.5px;
+  letter-spacing:.06em;text-transform:uppercase;color:var(--muted);
+}
+p.agenda.offen a{color:var(--s1);text-decoration:none}
+p.agenda.offen a:hover{text-decoration:underline}
+
+ol.tops{margin:10px 0 0;padding:0 0 0 20px;color:var(--ink-2)}
+ol.tops li{margin:0 0 7px;font-size:15px;line-height:1.5}
+ol.tops .sache{display:inline}
+ol.tops .sv{
+  margin-left:9px;font-family:var(--mono);font-size:11px;
+  color:var(--muted);white-space:nowrap;
+}
+ol.tops .unterlagen{display:block;margin-top:3px}
+ol.tops .doc{
+  font-family:var(--mono);font-size:11px;color:var(--s1);
+  text-decoration:none;border-bottom:1px solid rgba(57,135,229,.35);
+}
+ol.tops .doc:hover{border-bottom-color:var(--s1)}
+</style>
+</head>
+<body class="lesen">
+
+<div class="brandbar" id="seitenanfang"><div class="wrap">
+  <nav aria-label="Bereiche">
+    <a href="index.html" aria-current="page">Startseite</a>
+    <span aria-hidden="true">/</span>
+    <a href="termine.html#heute">Termine</a>
+    <span aria-hidden="true">/</span>
+    <a href="themen/index.html">Themen</a>
+    <span aria-hidden="true">/</span>
+    <a href="suche.html">Suche</a>
+    <span aria-hidden="true">/</span>
+    <a href="befunde.html">Erkenntnisse</a>
+    <span aria-hidden="true">/</span>
+    <a href="ausgaben/index.html">Archiv</a>
+    <span aria-hidden="true">/</span>
+    <a href="gremien.html">Wer entscheidet was</a>
+  </nav>
+</div></div>
+
+<div class="wrap">
+
+<header>
+  <p class="eyebrow">Lernprojekt &middot; Kommunaldaten</p>
+  <h1>Ratsakten Bad Waldsee</h1>
+  <p class="lede">Die Sitzungsunterlagen der Stadt Bad Waldsee stehen vollst&auml;ndig
+  im Netz — verteilt auf Hunderte von PDF-Dateien. Dieses Projekt wertet sie
+  maschinell aus und macht daraus etwas Lesbares.</p>
+
+  <div class="tiles">
+    <div class="tile"><span class="v">166</span><span class="k">Sitzungen</span></div>
+    <div class="tile"><span class="v">616</span><span class="k">Tagesordnungs-<br>punkte</span></div>
+    <div class="tile"><span class="v">300</span><span class="k">Vorlagen</span></div>
+    <div class="tile"><span class="v">72</span><span class="k">Protokolle</span></div>
+    <div class="tile"><span class="v">337</span><span class="k">Abstimmungen</span></div>
+    <div class="tile"><span class="v">625</span><span class="k">Dokumente</span></div>
+  </div>
+</header>
+
+<section>
+  <h2>Einstiege</h2>
+  <div class="karten">
+    <a class="karte" href="./ausgaben/2026/kw37.html">
+      <p class="art">Aktenlage &middot; aktuelle Ausgabe</p>
+      <h3>Waldseer Aktenlage, KW 37/2026</h3>
+      <p>Was der Gemeinderat und seine Aussch&uuml;sse zuletzt entschieden haben.
+      In diesem Berichtszeitraum wurde kein Beschlussprotokoll ver&ouml;ffentlicht.</p>
+      <p class="meta">Berichtszeitraum 10.08.–11.09.2026</p>
+    </a>
+    <a class="karte" href="./gremien.html">
+      <p class="art">Grundlagen</p>
+      <h3>Wer entscheidet was</h3>
+      <p>Gemeinderat, beschlie&szlig;ende Aussch&uuml;sse, Ortschaftsr&auml;te, Gemeinsamer Ausschuss —
+      und was die Stadt gar nicht entscheidet. Die Lesehilfe f&uuml;r alles &Uuml;brige.</p>
+      <p class="meta">Mit Fundstellen aus Hauptsatzung, Gemeindeordnung und Baugesetzbuch</p>
+    </a>
+    <a class="karte" href="./themen/index.html">
+      <p class="art">Vorhaben &middot; im Zeitverlauf</p>
+      <h3>Was wurde aus …?</h3>
+      <p>26 Vorhaben mit ihrem vollst&auml;ndigen Verlauf — ein Bauleitplan oder ein
+      Ger&auml;tehaus zieht sich &uuml;ber Jahre und durch mehrere Gremien. Die Wochenausgaben
+      zeigen davon immer nur einen Ausschnitt.</p>
+      <p class="meta">L&auml;ngster Vorgang: 19 Stationen &uuml;ber zwei Jahre</p>
+    </a>
+    <a class="karte" href="./suche.html">
+      <p class="art">Vorg&auml;nge &middot; durchsuchbar</p>
+      <h3>Was wurde zu einem Thema entschieden?</h3>
+      <p>506 Vorg&auml;nge mit ihrem Weg durch die Gremien — von der ersten
+      Beratung bis zum Beschluss, mit Datum, Gremium und Stimmenverh&auml;ltnis.
+      28 davon durchliefen mehrere Stationen.</p>
+      <p class="meta">Suche nach Stichwort oder Vorlagennummer</p>
+    </a>
+    <a class="karte" href="./befunde.html">
+      <p class="art">Erkenntnisse &middot; gesammelt</p>
+      <h3>Was aufgefallen ist</h3>
+      <p>25 Eintr&auml;ge an einem Ort statt verstreut &uuml;ber Report und Wochenausgaben:
+      eingehaltene Fristen und abgeschlossene Verfahren ebenso wie die Stellen,
+      an denen die Aktenlage Fragen offenl&auml;sst.</p>
+      <p class="meta">Regelbasiert gez&auml;hlt und maschinell gedeutet, jeweils gekennzeichnet</p>
+    </a>
+    <a class="karte" href="./report/2026-09-09.html">
+      <p class="art">Report &middot; Vollauswertung</p>
+      <h3>Ratsanalyse Bad Waldsee</h3>
+      <p>Auswertung der gesamten dokumentierten Gremienarbeit: Transparenz, Themen,
+      Abstimmungsverhalten, Finanzen — dazu die 50 auff&auml;lligsten Tagesordnungspunkte
+      und acht Beobachtungen.</p>
+      <p class="meta">Stand 9. September 2026 &middot; 8 Kapitel &middot; 5 Diagramme</p>
+    </a>
+    <a class="karte" href="./ausgaben/index.html">
+      <p class="art">Aktenlage &middot; Archiv</p>
+      <h3>Alle bisherigen Ausgaben</h3>
+      <p>89 Ausgaben mit zusammen 316 Beschl&uuml;ssen, eine f&uuml;r jede
+      Kalenderwoche, in der getagt wurde. Jede Ausgabe nennt auch die Sitzungen,
+      zu denen online kein Protokoll abrufbar ist.</p>
+      <p class="meta">Jahrg&auml;nge 2024–2026 &middot; maschinell erzeugt</p>
+    </a>
+  </div>
+</section>
+
+
+<section>
+  <h2>Zeitleiste</h2>
+  <div class="zeitleiste">
+      <div class="jahrzeile kopf">
+        <span class="jahr">KW</span>
+        <div class="wochen"><span class="kw beschriftet">1</span><span class="kw"></span><span class="kw"></span><span class="kw"></span><span class="kw beschriftet">5</span><span class="kw"></span><span class="kw"></span><span class="kw"></span><span class="kw"></span><span class="kw beschriftet">10</span><span class="kw"></span><span class="kw"></span><span class="kw"></span><span class="kw"></span><span class="kw beschriftet">15</span><span class="kw"></span><span class="kw"></span><span class="kw"></span><span class="kw"></span><span class="kw beschriftet">20</span><span class="kw"></span><span class="kw"></span><span class="kw"></span><span class="kw"></span><span class="kw beschriftet">25</span><span class="kw"></span><span class="kw"></span><span class="kw"></span><span class="kw"></span><span class="kw beschriftet">30</span><span class="kw"></span><span class="kw"></span><span class="kw"></span><span class="kw"></span><span class="kw beschriftet">35</span><span class="kw"></span><span class="kw"></span><span class="kw"></span><span class="kw"></span><span class="kw beschriftet">40</span><span class="kw"></span><span class="kw"></span><span class="kw"></span><span class="kw"></span><span class="kw beschriftet">45</span><span class="kw"></span><span class="kw"></span><span class="kw"></span><span class="kw"></span><span class="kw beschriftet">50</span><span class="kw"></span><span class="kw"></span><span class="kw"></span></div>
+      </div>
+      <div class="jahrzeile">
+        <span class="jahr">2026</span>
+        <div class="wochen"><span class="w leer" title="KW 1/2026 &middot; keine Sitzung"></span><span class="w leer" title="KW 2/2026 &middot; keine Sitzung"></span><a class="w s4" href="./ausgaben/2026/kw03.html" title="KW 3/2026 &middot; 12.01.–18.01.2026 &middot; 4 Sitzungen, 0 Beschl&uuml;sse"><span class="sr">KW 3/2026, 4 Sitzungen</span></a><a class="w s2" href="./ausgaben/2026/kw04.html" title="KW 4/2026 &middot; 19.01.–25.01.2026 &middot; 2 Sitzungen, 4 Beschl&uuml;sse"><span class="sr">KW 4/2026, 2 Sitzungen</span></a><span class="w leer" title="KW 5/2026 &middot; keine Sitzung"></span><a class="w s2" href="./ausgaben/2026/kw06.html" title="KW 6/2026 &middot; 26.01.–08.02.2026 &middot; 2 Sitzungen, 14 Beschl&uuml;sse"><span class="sr">KW 6/2026, 2 Sitzungen</span></a><span class="w leer" title="KW 7/2026 &middot; keine Sitzung"></span><span class="w leer" title="KW 8/2026 &middot; keine Sitzung"></span><a class="w s1" href="./ausgaben/2026/kw09.html" title="KW 9/2026 &middot; 09.02.–01.03.2026 &middot; 1 Sitzung, 0 Beschl&uuml;sse"><span class="sr">KW 9/2026, 1 Sitzung</span></a><a class="w s2" href="./ausgaben/2026/kw10.html" title="KW 10/2026 &middot; 02.03.–08.03.2026 &middot; 2 Sitzungen, 5 Beschl&uuml;sse"><span class="sr">KW 10/2026, 2 Sitzungen</span></a><a class="w s2" href="./ausgaben/2026/kw11.html" title="KW 11/2026 &middot; 09.03.–15.03.2026 &middot; 2 Sitzungen, 0 Beschl&uuml;sse"><span class="sr">KW 11/2026, 2 Sitzungen</span></a><a class="w s1" href="./ausgaben/2026/kw12.html" title="KW 12/2026 &middot; 16.03.–22.03.2026 &middot; 1 Sitzung, 0 Beschl&uuml;sse"><span class="sr">KW 12/2026, 1 Sitzung</span></a><a class="w s2" href="./ausgaben/2026/kw13.html" title="KW 13/2026 &middot; 23.03.–29.03.2026 &middot; 2 Sitzungen, 7 Beschl&uuml;sse"><span class="sr">KW 13/2026, 2 Sitzungen</span></a><span class="w leer" title="KW 14/2026 &middot; keine Sitzung"></span><span class="w leer" title="KW 15/2026 &middot; keine Sitzung"></span><a class="w s3" href="./ausgaben/2026/kw16.html" title="KW 16/2026 &middot; 30.03.–19.04.2026 &middot; 3 Sitzungen, 11 Beschl&uuml;sse"><span class="sr">KW 16/2026, 3 Sitzungen</span></a><a class="w s3" href="./ausgaben/2026/kw17.html" title="KW 17/2026 &middot; 20.04.–26.04.2026 &middot; 3 Sitzungen, 0 Beschl&uuml;sse"><span class="sr">KW 17/2026, 3 Sitzungen</span></a><a class="w s2" href="./ausgaben/2026/kw18.html" title="KW 18/2026 &middot; 27.04.–03.05.2026 &middot; 2 Sitzungen, 1 Beschl&uuml;sse"><span class="sr">KW 18/2026, 2 Sitzungen</span></a><span class="w leer" title="KW 19/2026 &middot; keine Sitzung"></span><a class="w s1" href="./ausgaben/2026/kw20.html" title="KW 20/2026 &middot; 04.05.–17.05.2026 &middot; 1 Sitzung, 6 Beschl&uuml;sse"><span class="sr">KW 20/2026, 1 Sitzung</span></a><a class="w s2" href="./ausgaben/2026/kw21.html" title="KW 21/2026 &middot; 18.05.–24.05.2026 &middot; 2 Sitzungen, 0 Beschl&uuml;sse"><span class="sr">KW 21/2026, 2 Sitzungen</span></a><span class="w leer" title="KW 22/2026 &middot; keine Sitzung"></span><span class="w leer" title="KW 23/2026 &middot; keine Sitzung"></span><a class="w s1" href="./ausgaben/2026/kw24.html" title="KW 24/2026 &middot; 25.05.–14.06.2026 &middot; 1 Sitzung, 2 Beschl&uuml;sse"><span class="sr">KW 24/2026, 1 Sitzung</span></a><span class="w leer" title="KW 25/2026 &middot; keine Sitzung"></span><a class="w s3" href="./ausgaben/2026/kw26.html" title="KW 26/2026 &middot; 15.06.–28.06.2026 &middot; 3 Sitzungen, 0 Beschl&uuml;sse"><span class="sr">KW 26/2026, 3 Sitzungen</span></a><a class="w s3" href="./ausgaben/2026/kw27.html" title="KW 27/2026 &middot; 29.06.–05.07.2026 &middot; 3 Sitzungen, 4 Beschl&uuml;sse"><span class="sr">KW 27/2026, 3 Sitzungen</span></a><a class="w s1" href="./ausgaben/2026/kw28.html" title="KW 28/2026 &middot; 06.07.–12.07.2026 &middot; 1 Sitzung, 7 Beschl&uuml;sse"><span class="sr">KW 28/2026, 1 Sitzung</span></a><span class="w leer" title="KW 29/2026 &middot; keine Sitzung"></span><a class="w s2" href="./ausgaben/2026/kw30.html" title="KW 30/2026 &middot; 13.07.–26.07.2026 &middot; 2 Sitzungen, 11 Beschl&uuml;sse"><span class="sr">KW 30/2026, 2 Sitzungen</span></a><a class="w s2" href="./ausgaben/2026/kw31.html" title="KW 31/2026 &middot; 27.07.–02.08.2026 &middot; 2 Sitzungen, 0 Beschl&uuml;sse"><span class="sr">KW 31/2026, 2 Sitzungen</span></a><a class="w s1" href="./ausgaben/2026/kw32.html" title="KW 32/2026 &middot; 03.08.–09.08.2026 &middot; 1 Sitzung, 0 Beschl&uuml;sse"><span class="sr">KW 32/2026, 1 Sitzung</span></a><span class="w leer" title="KW 33/2026 &middot; keine Sitzung"></span><span class="w leer" title="KW 34/2026 &middot; keine Sitzung"></span><span class="w leer" title="KW 35/2026 &middot; keine Sitzung"></span><span class="w leer" title="KW 36/2026 &middot; keine Sitzung"></span><a class="w leer" href="./ausgaben/2026/kw37.html" title="KW 37/2026 &middot; 10.08.–11.09.2026 &middot; 0 Sitzungen, 0 Beschl&uuml;sse"><span class="sr">KW 37/2026, 0 Sitzungen</span></a></div>
+      </div>
+      <div class="jahrzeile">
+        <span class="jahr">2025</span>
+        <div class="wochen"><span class="w leer" title="KW 1/2025 &middot; keine Sitzung"></span><span class="w leer" title="KW 2/2025 &middot; keine Sitzung"></span><a class="w s2" href="./ausgaben/2025/kw03.html" title="KW 3/2025 &middot; 13.01.–19.01.2025 &middot; 2 Sitzungen, 0 Beschl&uuml;sse"><span class="sr">KW 3/2025, 2 Sitzungen</span></a><a class="w s2" href="./ausgaben/2025/kw04.html" title="KW 4/2025 &middot; 20.01.–26.01.2025 &middot; 2 Sitzungen, 0 Beschl&uuml;sse"><span class="sr">KW 4/2025, 2 Sitzungen</span></a><a class="w s2" href="./ausgaben/2025/kw05.html" title="KW 5/2025 &middot; 27.01.–02.02.2025 &middot; 2 Sitzungen, 5 Beschl&uuml;sse"><span class="sr">KW 5/2025, 2 Sitzungen</span></a><a class="w s2" href="./ausgaben/2025/kw06.html" title="KW 6/2025 &middot; 03.02.–09.02.2025 &middot; 2 Sitzungen, 12 Beschl&uuml;sse"><span class="sr">KW 6/2025, 2 Sitzungen</span></a><span class="w leer" title="KW 7/2025 &middot; keine Sitzung"></span><a class="w s3" href="./ausgaben/2025/kw08.html" title="KW 8/2025 &middot; 10.02.–23.02.2025 &middot; 3 Sitzungen, 0 Beschl&uuml;sse"><span class="sr">KW 8/2025, 3 Sitzungen</span></a><span class="w leer" title="KW 9/2025 &middot; keine Sitzung"></span><span class="w leer" title="KW 10/2025 &middot; keine Sitzung"></span><a class="w s1" href="./ausgaben/2025/kw11.html" title="KW 11/2025 &middot; 24.02.–16.03.2025 &middot; 1 Sitzung, 0 Beschl&uuml;sse"><span class="sr">KW 11/2025, 1 Sitzung</span></a><a class="w s1" href="./ausgaben/2025/kw12.html" title="KW 12/2025 &middot; 17.03.–23.03.2025 &middot; 1 Sitzung, 0 Beschl&uuml;sse"><span class="sr">KW 12/2025, 1 Sitzung</span></a><a class="w s2" href="./ausgaben/2025/kw13.html" title="KW 13/2025 &middot; 24.03.–30.03.2025 &middot; 2 Sitzungen, 6 Beschl&uuml;sse"><span class="sr">KW 13/2025, 2 Sitzungen</span></a><a class="w s3" href="./ausgaben/2025/kw14.html" title="KW 14/2025 &middot; 31.03.–06.04.2025 &middot; 3 Sitzungen, 0 Beschl&uuml;sse"><span class="sr">KW 14/2025, 3 Sitzungen</span></a><a class="w s2" href="./ausgaben/2025/kw15.html" title="KW 15/2025 &middot; 07.04.–13.04.2025 &middot; 2 Sitzungen, 6 Beschl&uuml;sse"><span class="sr">KW 15/2025, 2 Sitzungen</span></a><span class="w leer" title="KW 16/2025 &middot; keine Sitzung"></span><span class="w leer" title="KW 17/2025 &middot; keine Sitzung"></span><a class="w s1" href="./ausgaben/2025/kw18.html" title="KW 18/2025 &middot; 14.04.–04.05.2025 &middot; 1 Sitzung, 7 Beschl&uuml;sse"><span class="sr">KW 18/2025, 1 Sitzung</span></a><a class="w s2" href="./ausgaben/2025/kw19.html" title="KW 19/2025 &middot; 05.05.–11.05.2025 &middot; 2 Sitzungen, 0 Beschl&uuml;sse"><span class="sr">KW 19/2025, 2 Sitzungen</span></a><a class="w s1" href="./ausgaben/2025/kw20.html" title="KW 20/2025 &middot; 12.05.–18.05.2025 &middot; 1 Sitzung, 0 Beschl&uuml;sse"><span class="sr">KW 20/2025, 1 Sitzung</span></a><a class="w s1" href="./ausgaben/2025/kw21.html" title="KW 21/2025 &middot; 19.05.–25.05.2025 &middot; 1 Sitzung, 0 Beschl&uuml;sse"><span class="sr">KW 21/2025, 1 Sitzung</span></a><a class="w s1" href="./ausgaben/2025/kw22.html" title="KW 22/2025 &middot; 26.05.–01.06.2025 &middot; 1 Sitzung, 5 Beschl&uuml;sse"><span class="sr">KW 22/2025, 1 Sitzung</span></a><span class="w leer" title="KW 23/2025 &middot; keine Sitzung"></span><span class="w leer" title="KW 24/2025 &middot; keine Sitzung"></span><span class="w leer" title="KW 25/2025 &middot; keine Sitzung"></span><a class="w s2" href="./ausgaben/2025/kw26.html" title="KW 26/2025 &middot; 02.06.–29.06.2025 &middot; 2 Sitzungen, 2 Beschl&uuml;sse"><span class="sr">KW 26/2025, 2 Sitzungen</span></a><a class="w s2" href="./ausgaben/2025/kw27.html" title="KW 27/2025 &middot; 30.06.–06.07.2025 &middot; 2 Sitzungen, 0 Beschl&uuml;sse"><span class="sr">KW 27/2025, 2 Sitzungen</span></a><a class="w s2" href="./ausgaben/2025/kw28.html" title="KW 28/2025 &middot; 07.07.–13.07.2025 &middot; 2 Sitzungen, 5 Beschl&uuml;sse"><span class="sr">KW 28/2025, 2 Sitzungen</span></a><a class="w s2" href="./ausgaben/2025/kw29.html" title="KW 29/2025 &middot; 14.07.–20.07.2025 &middot; 2 Sitzungen, 0 Beschl&uuml;sse"><span class="sr">KW 29/2025, 2 Sitzungen</span></a><a class="w s2" href="./ausgaben/2025/kw30.html" title="KW 30/2025 &middot; 21.07.–27.07.2025 &middot; 2 Sitzungen, 9 Beschl&uuml;sse"><span class="sr">KW 30/2025, 2 Sitzungen</span></a><a class="w s2" href="./ausgaben/2025/kw31.html" title="KW 31/2025 &middot; 28.07.–03.08.2025 &middot; 2 Sitzungen, 3 Beschl&uuml;sse"><span class="sr">KW 31/2025, 2 Sitzungen</span></a><span class="w leer" title="KW 32/2025 &middot; keine Sitzung"></span><span class="w leer" title="KW 33/2025 &middot; keine Sitzung"></span><span class="w leer" title="KW 34/2025 &middot; keine Sitzung"></span><span class="w leer" title="KW 35/2025 &middot; keine Sitzung"></span><span class="w leer" title="KW 36/2025 &middot; keine Sitzung"></span><a class="w s1" href="./ausgaben/2025/kw37.html" title="KW 37/2025 &middot; 04.08.–14.09.2025 &middot; 1 Sitzung, 0 Beschl&uuml;sse"><span class="sr">KW 37/2025, 1 Sitzung</span></a><a class="w s2" href="./ausgaben/2025/kw38.html" title="KW 38/2025 &middot; 15.09.–21.09.2025 &middot; 2 Sitzungen, 3 Beschl&uuml;sse"><span class="sr">KW 38/2025, 2 Sitzungen</span></a><a class="w s2" href="./ausgaben/2025/kw39.html" title="KW 39/2025 &middot; 22.09.–28.09.2025 &middot; 2 Sitzungen, 0 Beschl&uuml;sse"><span class="sr">KW 39/2025, 2 Sitzungen</span></a><a class="w s4" href="./ausgaben/2025/kw40.html" title="KW 40/2025 &middot; 29.09.–05.10.2025 &middot; 4 Sitzungen, 8 Beschl&uuml;sse"><span class="sr">KW 40/2025, 4 Sitzungen</span></a><a class="w s1" href="./ausgaben/2025/kw41.html" title="KW 41/2025 &middot; 06.10.–12.10.2025 &middot; 1 Sitzung, 5 Beschl&uuml;sse"><span class="sr">KW 41/2025, 1 Sitzung</span></a><a class="w s1" href="./ausgaben/2025/kw42.html" title="KW 42/2025 &middot; 13.10.–19.10.2025 &middot; 1 Sitzung, 0 Beschl&uuml;sse"><span class="sr">KW 42/2025, 1 Sitzung</span></a><a class="w s2" href="./ausgaben/2025/kw43.html" title="KW 43/2025 &middot; 20.10.–26.10.2025 &middot; 2 Sitzungen, 13 Beschl&uuml;sse"><span class="sr">KW 43/2025, 2 Sitzungen</span></a><span class="w leer" title="KW 44/2025 &middot; keine Sitzung"></span><a class="w s1" href="./ausgaben/2025/kw45.html" title="KW 45/2025 &middot; 27.10.–09.11.2025 &middot; 1 Sitzung, 0 Beschl&uuml;sse"><span class="sr">KW 45/2025, 1 Sitzung</span></a><a class="w s1" href="./ausgaben/2025/kw46.html" title="KW 46/2025 &middot; 10.11.–16.11.2025 &middot; 1 Sitzung, 5 Beschl&uuml;sse"><span class="sr">KW 46/2025, 1 Sitzung</span></a><a class="w s4" href="./ausgaben/2025/kw47.html" title="KW 47/2025 &middot; 17.11.–23.11.2025 &middot; 4 Sitzungen, 0 Beschl&uuml;sse"><span class="sr">KW 47/2025, 4 Sitzungen</span></a><a class="w s1" href="./ausgaben/2025/kw48.html" title="KW 48/2025 &middot; 24.11.–30.11.2025 &middot; 1 Sitzung, 3 Beschl&uuml;sse"><span class="sr">KW 48/2025, 1 Sitzung</span></a><a class="w s1" href="./ausgaben/2025/kw49.html" title="KW 49/2025 &middot; 01.12.–07.12.2025 &middot; 1 Sitzung, 8 Beschl&uuml;sse"><span class="sr">KW 49/2025, 1 Sitzung</span></a><a class="w s1" href="./ausgaben/2025/kw50.html" title="KW 50/2025 &middot; 08.12.–14.12.2025 &middot; 1 Sitzung, 1 Beschl&uuml;sse"><span class="sr">KW 50/2025, 1 Sitzung</span></a><a class="w s1" href="./ausgaben/2025/kw51.html" title="KW 51/2025 &middot; 15.12.–21.12.2025 &middot; 1 Sitzung, 0 Beschl&uuml;sse"><span class="sr">KW 51/2025, 1 Sitzung</span></a><span class="w leer" title="KW 52/2025 &middot; keine Sitzung"></span></div>
+      </div>
+      <div class="jahrzeile">
+        <span class="jahr">2024</span>
+        <div class="wochen"><span class="w leer" title="KW 1/2024 &middot; keine Sitzung"></span><span class="w leer" title="KW 2/2024 &middot; keine Sitzung"></span><a class="w s4" href="./ausgaben/2024/kw03.html" title="KW 3/2024 &middot; 15.01.–21.01.2024 &middot; 4 Sitzungen, 0 Beschl&uuml;sse"><span class="sr">KW 3/2024, 4 Sitzungen</span></a><a class="w s2" href="./ausgaben/2024/kw04.html" title="KW 4/2024 &middot; 22.01.–28.01.2024 &middot; 2 Sitzungen, 4 Beschl&uuml;sse"><span class="sr">KW 4/2024, 2 Sitzungen</span></a><a class="w s1" href="./ausgaben/2024/kw05.html" title="KW 5/2024 &middot; 29.01.–04.02.2024 &middot; 1 Sitzung, 7 Beschl&uuml;sse"><span class="sr">KW 5/2024, 1 Sitzung</span></a><span class="w leer" title="KW 6/2024 &middot; keine Sitzung"></span><span class="w leer" title="KW 7/2024 &middot; keine Sitzung"></span><a class="w s2" href="./ausgaben/2024/kw08.html" title="KW 8/2024 &middot; 05.02.–25.02.2024 &middot; 2 Sitzungen, 0 Beschl&uuml;sse"><span class="sr">KW 8/2024, 2 Sitzungen</span></a><a class="w s2" href="./ausgaben/2024/kw09.html" title="KW 9/2024 &middot; 26.02.–03.03.2024 &middot; 2 Sitzungen, 12 Beschl&uuml;sse"><span class="sr">KW 9/2024, 2 Sitzungen</span></a><a class="w s4" href="./ausgaben/2024/kw10.html" title="KW 10/2024 &middot; 04.03.–10.03.2024 &middot; 4 Sitzungen, 5 Beschl&uuml;sse"><span class="sr">KW 10/2024, 4 Sitzungen</span></a><a class="w s1" href="./ausgaben/2024/kw11.html" title="KW 11/2024 &middot; 11.03.–17.03.2024 &middot; 1 Sitzung, 0 Beschl&uuml;sse"><span class="sr">KW 11/2024, 1 Sitzung</span></a><a class="w s1" href="./ausgaben/2024/kw12.html" title="KW 12/2024 &middot; 18.03.–24.03.2024 &middot; 1 Sitzung, 2 Beschl&uuml;sse"><span class="sr">KW 12/2024, 1 Sitzung</span></a><span class="w leer" title="KW 13/2024 &middot; keine Sitzung"></span><span class="w leer" title="KW 14/2024 &middot; keine Sitzung"></span><a class="w s2" href="./ausgaben/2024/kw15.html" title="KW 15/2024 &middot; 25.03.–14.04.2024 &middot; 2 Sitzungen, 0 Beschl&uuml;sse"><span class="sr">KW 15/2024, 2 Sitzungen</span></a><a class="w s3" href="./ausgaben/2024/kw16.html" title="KW 16/2024 &middot; 15.04.–21.04.2024 &middot; 3 Sitzungen, 5 Beschl&uuml;sse"><span class="sr">KW 16/2024, 3 Sitzungen</span></a><a class="w s3" href="./ausgaben/2024/kw17.html" title="KW 17/2024 &middot; 22.04.–28.04.2024 &middot; 3 Sitzungen, 17 Beschl&uuml;sse"><span class="sr">KW 17/2024, 3 Sitzungen</span></a><span class="w leer" title="KW 18/2024 &middot; keine Sitzung"></span><a class="w s3" href="./ausgaben/2024/kw19.html" title="KW 19/2024 &middot; 29.04.–12.05.2024 &middot; 3 Sitzungen, 0 Beschl&uuml;sse"><span class="sr">KW 19/2024, 3 Sitzungen</span></a><a class="w s2" href="./ausgaben/2024/kw20.html" title="KW 20/2024 &middot; 13.05.–19.05.2024 &middot; 2 Sitzungen, 2 Beschl&uuml;sse"><span class="sr">KW 20/2024, 2 Sitzungen</span></a><span class="w leer" title="KW 21/2024 &middot; keine Sitzung"></span><span class="w leer" title="KW 22/2024 &middot; keine Sitzung"></span><a class="w s1" href="./ausgaben/2024/kw23.html" title="KW 23/2024 &middot; 20.05.–09.06.2024 &middot; 1 Sitzung, 6 Beschl&uuml;sse"><span class="sr">KW 23/2024, 1 Sitzung</span></a><a class="w s2" href="./ausgaben/2024/kw24.html" title="KW 24/2024 &middot; 10.06.–16.06.2024 &middot; 2 Sitzungen, 0 Beschl&uuml;sse"><span class="sr">KW 24/2024, 2 Sitzungen</span></a><a class="w s2" href="./ausgaben/2024/kw25.html" title="KW 25/2024 &middot; 17.06.–23.06.2024 &middot; 2 Sitzungen, 8 Beschl&uuml;sse"><span class="sr">KW 25/2024, 2 Sitzungen</span></a><span class="w leer" title="KW 26/2024 &middot; keine Sitzung"></span><a class="w s1" href="./ausgaben/2024/kw27.html" title="KW 27/2024 &middot; 24.06.–07.07.2024 &middot; 1 Sitzung, 0 Beschl&uuml;sse"><span class="sr">KW 27/2024, 1 Sitzung</span></a><a class="w s2" href="./ausgaben/2024/kw28.html" title="KW 28/2024 &middot; 08.07.–14.07.2024 &middot; 2 Sitzungen, 6 Beschl&uuml;sse"><span class="sr">KW 28/2024, 2 Sitzungen</span></a><a class="w s4" href="./ausgaben/2024/kw29.html" title="KW 29/2024 &middot; 15.07.–21.07.2024 &middot; 5 Sitzungen, 9 Beschl&uuml;sse"><span class="sr">KW 29/2024, 5 Sitzungen</span></a><span class="w leer" title="KW 30/2024 &middot; keine Sitzung"></span><a class="w s1" href="./ausgaben/2024/kw31.html" title="KW 31/2024 &middot; 22.07.–04.08.2024 &middot; 1 Sitzung, 0 Beschl&uuml;sse"><span class="sr">KW 31/2024, 1 Sitzung</span></a><a class="w s1" href="./ausgaben/2024/kw32.html" title="KW 32/2024 &middot; 05.08.–11.08.2024 &middot; 1 Sitzung, 8 Beschl&uuml;sse"><span class="sr">KW 32/2024, 1 Sitzung</span></a><span class="w leer" title="KW 33/2024 &middot; keine Sitzung"></span><span class="w leer" title="KW 34/2024 &middot; keine Sitzung"></span><span class="w leer" title="KW 35/2024 &middot; keine Sitzung"></span><span class="w leer" title="KW 36/2024 &middot; keine Sitzung"></span><a class="w s2" href="./ausgaben/2024/kw37.html" title="KW 37/2024 &middot; 12.08.–15.09.2024 &middot; 2 Sitzungen, 0 Beschl&uuml;sse"><span class="sr">KW 37/2024, 2 Sitzungen</span></a><a class="w s1" href="./ausgaben/2024/kw38.html" title="KW 38/2024 &middot; 16.09.–22.09.2024 &middot; 1 Sitzung, 8 Beschl&uuml;sse"><span class="sr">KW 38/2024, 1 Sitzung</span></a><a class="w s2" href="./ausgaben/2024/kw39.html" title="KW 39/2024 &middot; 23.09.–29.09.2024 &middot; 2 Sitzungen, 5 Beschl&uuml;sse"><span class="sr">KW 39/2024, 2 Sitzungen</span></a><a class="w s2" href="./ausgaben/2024/kw40.html" title="KW 40/2024 &middot; 30.09.–06.10.2024 &middot; 2 Sitzungen, 2 Beschl&uuml;sse"><span class="sr">KW 40/2024, 2 Sitzungen</span></a><a class="w s1" href="./ausgaben/2024/kw41.html" title="KW 41/2024 &middot; 07.10.–13.10.2024 &middot; 1 Sitzung, 3 Beschl&uuml;sse"><span class="sr">KW 41/2024, 1 Sitzung</span></a><a class="w s2" href="./ausgaben/2024/kw42.html" title="KW 42/2024 &middot; 14.10.–20.10.2024 &middot; 2 Sitzungen, 3 Beschl&uuml;sse"><span class="sr">KW 42/2024, 2 Sitzungen</span></a><span class="w leer" title="KW 43/2024 &middot; keine Sitzung"></span><span class="w leer" title="KW 44/2024 &middot; keine Sitzung"></span><a class="w s1" href="./ausgaben/2024/kw45.html" title="KW 45/2024 &middot; 21.10.–10.11.2024 &middot; 1 Sitzung, 4 Beschl&uuml;sse"><span class="sr">KW 45/2024, 1 Sitzung</span></a><span class="w leer" title="KW 46/2024 &middot; keine Sitzung"></span><a class="w s3" href="./ausgaben/2024/kw47.html" title="KW 47/2024 &middot; 11.11.–24.11.2024 &middot; 3 Sitzungen, 0 Beschl&uuml;sse"><span class="sr">KW 47/2024, 3 Sitzungen</span></a><a class="w s2" href="./ausgaben/2024/kw48.html" title="KW 48/2024 &middot; 25.11.–01.12.2024 &middot; 2 Sitzungen, 7 Beschl&uuml;sse"><span class="sr">KW 48/2024, 2 Sitzungen</span></a><a class="w s2" href="./ausgaben/2024/kw49.html" title="KW 49/2024 &middot; 02.12.–08.12.2024 &middot; 2 Sitzungen, 6 Beschl&uuml;sse"><span class="sr">KW 49/2024, 2 Sitzungen</span></a><a class="w s1" href="./ausgaben/2024/kw50.html" title="KW 50/2024 &middot; 09.12.–15.12.2024 &middot; 1 Sitzung, 9 Beschl&uuml;sse"><span class="sr">KW 50/2024, 1 Sitzung</span></a><a class="w s1" href="./ausgaben/2024/kw51.html" title="KW 51/2024 &middot; 16.12.–22.12.2024 &middot; 1 Sitzung, 0 Beschl&uuml;sse"><span class="sr">KW 51/2024, 1 Sitzung</span></a><span class="w leer" title="KW 52/2024 &middot; keine Sitzung"></span></div>
+      </div>
+  </div>
+  <p class="skala"><span>weniger</span><span class="w s1"></span><span class="w s2"></span><span class="w s3"></span><span class="w s4"></span><span>mehr Sitzungen</span><span class="trenn">&middot;</span><a href="./ausgaben/index.html">alle Ausgaben als Liste</a></p>
+</section>
+
+<section>
+  <h2>Was als N&auml;chstes ansteht</h2>
+  <ol class="termine">
+    <li>
+      <p class="wann">Dienstag, 15. September<span class="uhr">18:00 Uhr</span><span class="bald">in 4 Tagen</span></p>
+      <p class="gremium">Verwaltungsausschuss</p>
+      <details class="agenda">
+        <summary>5 Tagesordnungspunkte</summary>
+        <ol class="tops">
+        <li><span class="sache">Bekanntgabe der in nichtöffentlicher Sitzung getroffenen Entscheidung/en</span></li>
+        <li><span class="sache">Integrationsbericht<span class="sv">SV-118/2026</span></span><span class="unterlagen"><a class="doc" href="https://ris.bad-waldsee.de/sdnetrim/UGhVM0hpd2NXNFdFcExjZeJXS3Qaoe0etmy6qc8o5ptpsUI03eRHT53pXg4z98M4/Sitzungsvorlage_SV-118-2026.pdf" target="_blank" rel="noopener noreferrer">Sitzungsvorlage SV-118/2026</a></span></li>
+        <li><span class="sache">Dorfmitte Osterhofen – Sanierung des Gebäudes auf Flst. 1623 sowie Gestaltung und Überlassung der Außenanlagen<span class="sv">SV-152/2026</span></span></li>
+        <li><span class="sache">Verschiedenes</span></li>
+        <li><span class="sache">Bekanntgaben</span></li>
+        </ol>
+        <p class="quelle"><a href="https://ris.bad-waldsee.de/tops/?__=UGhVM0hpd2NXNFdFcExjZRKoRnhnLLCFV_DehXmy-js" target="_blank" rel="noopener noreferrer">Sitzung im Ratsinformationssystem</a></p>
+      </details>
+    </li>
+    <li>
+      <p class="wann">Dienstag, 22. September<span class="uhr">19:30 Uhr</span><span class="bald">in 11 Tagen</span></p>
+      <p class="gremium">Ortschaftsrat Reute-Gaisbeuren</p>
+      <p class="agenda offen">Tagesordnung noch nicht ver&ouml;ffentlicht &middot; <a href="https://ris.bad-waldsee.de/tops/?__=UGhVM0hpd2NXNFdFcExjZYI3GRSmaJeR1pUdvTfqBR0" target="_blank" rel="noopener noreferrer">Termin im Ratsinformationssystem</a></p>
+    </li>
+    <li>
+      <p class="wann">Montag, 28. September<span class="uhr">18:00 Uhr</span></p>
+      <p class="gremium">Gemeinderat</p>
+      <p class="agenda offen">Tagesordnung noch nicht ver&ouml;ffentlicht &middot; <a href="https://ris.bad-waldsee.de/tops/?__=UGhVM0hpd2NXNFdFcExjZdP0ydn8uQto-aOMDpyyPGU" target="_blank" rel="noopener noreferrer">Termin im Ratsinformationssystem</a></p>
+    </li>
+    <li>
+      <p class="wann">Mittwoch, 30. September<span class="uhr">19:00 Uhr</span></p>
+      <p class="gremium">Ortschaftsrat Haisterkirch</p>
+      <p class="agenda offen">Tagesordnung noch nicht ver&ouml;ffentlicht &middot; <a href="https://ris.bad-waldsee.de/tops/?__=UGhVM0hpd2NXNFdFcExjZetlJRm9FZRQylvzFdSgRGw" target="_blank" rel="noopener noreferrer">Termin im Ratsinformationssystem</a></p>
+    </li>
+    <li>
+      <p class="wann">Dienstag, 6. Oktober<span class="uhr">18:00 Uhr</span></p>
+      <p class="gremium">Ortschaftsrat Michelwinnaden</p>
+      <p class="agenda offen">Tagesordnung noch nicht ver&ouml;ffentlicht &middot; <a href="https://ris.bad-waldsee.de/tops/?__=UGhVM0hpd2NXNFdFcExjZa4pYNWfPm2Em2N8ck18h0Q" target="_blank" rel="noopener noreferrer">Termin im Ratsinformationssystem</a></p>
+    </li>
+    <li>
+      <p class="wann">Donnerstag, 8. Oktober<span class="uhr">19:00 Uhr</span></p>
+      <p class="gremium">Ortschaftsrat Mittelurbach</p>
+      <p class="agenda offen">Tagesordnung noch nicht ver&ouml;ffentlicht &middot; <a href="https://ris.bad-waldsee.de/tops/?__=UGhVM0hpd2NXNFdFcExjZXrojZNmvBN5GYNNrrV5Nk0" target="_blank" rel="noopener noreferrer">Termin im Ratsinformationssystem</a></p>
+    </li>
+    <li>
+      <p class="wann">Montag, 12. Oktober<span class="uhr">18:00 Uhr</span></p>
+      <p class="gremium">Ausschuss Umwelt/Technik</p>
+      <p class="agenda offen">Tagesordnung noch nicht ver&ouml;ffentlicht &middot; <a href="https://ris.bad-waldsee.de/tops/?__=UGhVM0hpd2NXNFdFcExjZXSUiNOA_2UirDaHN9pT3PA" target="_blank" rel="noopener noreferrer">Termin im Ratsinformationssystem</a></p>
+    </li>
+    <li>
+      <p class="wann">Dienstag, 13. Oktober<span class="uhr">18:00 Uhr</span></p>
+      <p class="gremium">Verwaltungsausschuss</p>
+      <p class="agenda offen">Tagesordnung noch nicht ver&ouml;ffentlicht &middot; <a href="https://ris.bad-waldsee.de/tops/?__=UGhVM0hpd2NXNFdFcExjZVXsCT4asupbS0_ozapxGgA" target="_blank" rel="noopener noreferrer">Termin im Ratsinformationssystem</a></p>
+    </li>
+    <li>
+      <p class="wann">Dienstag, 20. Oktober<span class="uhr">19:30 Uhr</span></p>
+      <p class="gremium">Ortschaftsrat Reute-Gaisbeuren</p>
+      <p class="agenda offen">Tagesordnung noch nicht ver&ouml;ffentlicht &middot; <a href="https://ris.bad-waldsee.de/tops/?__=UGhVM0hpd2NXNFdFcExjZavqx9_gURc5nSQ2Ov3R7tE" target="_blank" rel="noopener noreferrer">Termin im Ratsinformationssystem</a></p>
+    </li>
+    <li>
+      <p class="wann">Montag, 2. November<span class="uhr">18:00 Uhr</span></p>
+      <p class="gremium">Gemeinderat</p>
+      <p class="agenda offen">Tagesordnung noch nicht ver&ouml;ffentlicht &middot; <a href="https://ris.bad-waldsee.de/tops/?__=UGhVM0hpd2NXNFdFcExjZaF1uk3NCXRrkNMW_k7x0IU" target="_blank" rel="noopener noreferrer">Termin im Ratsinformationssystem</a></p>
+    </li>
+  </ol>
+  <p class="fussnote">Angek&uuml;ndigte Sitzungen aus dem Ratsinformationssystem. Sie sind &ouml;ffentlich, soweit nicht ausdr&uuml;cklich nicht&ouml;ffentlich beraten wird — wer hingehen will, kann das ohne Anmeldung. <a href="./termine.html#heute">Alle Termine, auch vergangene</a>.</p>
+</section>
+
+<section>
+  <h2>Worum es geht</h2>
+  <p>Lokaljournalismus ist vielerorts zur&uuml;ckgegangen, w&auml;hrend kommunale Unterlagen
+  so vollst&auml;ndig online stehen wie nie. Dazwischen klafft eine L&uuml;cke: Die
+  Information ist &ouml;ffentlich, aber praktisch ungelesen — nicht weil sie geheim w&auml;re,
+  sondern weil niemand die Zeit hat, Bebauungsplanverfahren und Geb&uuml;hrenkalkulationen
+  durchzuarbeiten.</p>
+  <p>Das Projekt geht drei technischen Fragen nach:</p>
+  <ul class="plain">
+    <li>Wie gut lassen sich kommunale Ratsinformationssysteme maschinell erschlie&szlig;en?</li>
+    <li>Wie viel Substanz steckt tats&auml;chlich in den Dokumenten — und wie viel ist Formalie?</li>
+    <li>Wo endet das, was aus Akten allein erkennbar ist?</li>
+  </ul>
+  <p>Alle Auswertungen beruhen ausschlie&szlig;lich auf &ouml;ffentlich zug&auml;nglichen
+  Dokumenten des <a href="https://ris.bad-waldsee.de/" rel="noopener">Ratsinformationssystems</a>
+  und der <a href="https://www.bad-waldsee.de/buerger/de/rathaus-service/aktuelles-bekanntmachungen/oeffentliche-bekanntmachungen" rel="noopener">&ouml;ffentlichen
+  Bekanntmachungen</a>. Es wurden keine Zugangsbeschr&auml;nkungen umgangen.</p>
+</section>
+
+<section style="border-bottom:none">
+  <h2>Hinweise</h2>
+  <div class="hinweis">
+    <p class="lab">Lernprojekt &middot; keine Gew&auml;hr &middot; keine Vorw&uuml;rfe</p>
+    <p><b>Dies ist ein privates Lern- und Technologieprojekt</b> zur automatisierten Auswertung
+    &ouml;ffentlich zug&auml;nglicher Verwaltungsdokumente. Es ist kein journalistisches
+    Erzeugnis, kein Pr&uuml;fbericht und keine rechtliche oder fachliche Bewertung.</p>
+    <p><b>F&uuml;r Richtigkeit, Vollst&auml;ndigkeit und Aktualit&auml;t wird keine
+    Gew&auml;hr &uuml;bernommen.</b> Alle Auswertungen beruhen auf maschineller Verarbeitung
+    von PDF-Dokumenten; Fehler bei Texterkennung und Zuordnung sind m&ouml;glich. Verbindlich
+    ist ausschlie&szlig;lich das jeweilige Originaldokument der Stadt Bad Waldsee.</p>
+    <p><b>Es werden keine Vorw&uuml;rfe erhoben.</b> Weder der Stadtverwaltung noch einzelnen
+    Personen wird rechtswidriges oder schuldhaftes Verhalten unterstellt. Einordnungen und
+    Wertungen sind als <b>KI-Deutung</b> gekennzeichnet: maschinell erzeugt, auf belegten
+    Zahlen beruhend, nicht redaktionell gepr&uuml;ft. Es sind Schlussfolgerungen, keine
+    Tatsachenbehauptungen.</p>
+    <p><b>Deutungen sind gekennzeichnet.</b> Wo eine Aussage &uuml;ber das reine
+    Z&auml;hlen hinausgeht — also Fakten ausw&auml;hlt, verkn&uuml;pft oder
+    gewichtet — steht die Marke <i>KI-Deutung</i> daneben. Diese Abschnitte sind
+    maschinell erzeugt und <b>nicht redaktionell gepr&uuml;ft</b>. Die
+    zugrunde liegenden Zahlen stammen aus den Protokollen und sind dort
+    nachpr&uuml;fbar.</p>
+    <p><b>Korrekturen sind erw&uuml;nscht</b> und werden zeitnah eingearbeitet. Es besteht
+    keine Verbindung zur Stadt Bad Waldsee.</p>
+  </div>
+</section>
+
+</div>
+
+<footer><div class="wrap">
+  <nav aria-label="Bereiche">
+    <a href="index.html">Startseite</a>
+    <span aria-hidden="true">/</span>
+    <a href="termine.html#heute">Termine</a>
+    <span aria-hidden="true">/</span>
+    <a href="themen/index.html">Themen</a>
+    <span aria-hidden="true">/</span>
+    <a href="suche.html">Suche</a>
+    <span aria-hidden="true">/</span>
+    <a href="befunde.html">Erkenntnisse</a>
+    <span aria-hidden="true">/</span>
+    <a href="ausgaben/index.html">Archiv</a>
+    <span aria-hidden="true">/</span>
+    <a href="gremien.html">Wer entscheidet was</a>
+  </nav>
+  <p class="brand">Created by <a href="https://amannlabs.eu" rel="noopener">AmannLabs.eu</a></p>
+    <p class="disclaimer">Alle Angaben und Insights ohne Gew&auml;hr &middot; Datenstand 11.09.2026 &middot; Seite erzeugt am 11.09.2026</p>
+</div></footer>
+<a class="hoch" href="#seitenanfang"><span aria-hidden="true">&uarr;</span><span class="sr">Zum Seitenanfang</span></a>
+</body>
+</html>
