@@ -4,7 +4,7 @@
 
 ## Stand und Grenzen
 
-Erster Datenstand ab 1. Januar 2024. `docs/index.html` zeigt den importierten Zeitraum und die tatsächlich erfassten Kennzahlen. Ein Kalendereintrag beweist nicht, dass eine Sitzung stattgefunden hat. Tagesordnungstitel belegen keine Beschlussergebnisse. Abstimmungen, Finanzsummen und vollständige Beschlusstexte werden bisher nicht ausgewertet. Die zusätzlichen amtlichen Berichte umfassen auch andere Jahre und Versammlungen.
+Erweiterter Datenstand ab 1. Januar 2024. `docs/index.html` zeigt den importierten Zeitraum und die tatsächlich erfassten Kennzahlen. Ein Kalendereintrag beweist nicht, dass eine Sitzung stattgefunden hat. Tagesordnungstitel belegen keine Beschlussergebnisse; Beschluss- und Abstimmungshinweise erscheinen nur, wenn ein maschinell lesbarer amtlicher PDF-Bericht ausreichend sicher zugeordnet werden konnte. Die zusätzlichen amtlichen Berichte umfassen auch andere Jahre und Versammlungen.
 
 Die Bad-Waldsee-Daten und Skripte bleiben unverändert unter `referenz_bad_waldsee/` als technische Referenz erhalten. Sie fließen nicht in die Oberstaufen-Ausgabe ein. Deren früherer Wochenlauf ist gemeindespezifisch und darf nicht für Oberstaufen verwendet werden.
 
@@ -16,6 +16,8 @@ Die Bad-Waldsee-Daten und Skripte bleiben unverändert unter `referenz_bad_walds
 ./scripts/wochenlauf.sh
 # Nur aus vorhandenen Daten neu bauen:
 ./scripts/wochenlauf.sh --offline
+# Vorhandene Daten zusätzlich mit Berichts-/Beschlusshinweisen anreichern:
+python3 scripts/oberstaufen.py --offline --auswerten
 # Abweichender Zeitraum:
 ./scripts/wochenlauf.sh --von 2025-01-01 --bis 2026-09-15
 ```
@@ -30,9 +32,11 @@ Der Lauf aktualisiert lokale Dateien. GitHub Desktop zeigt die Änderungen zur �
 
 Das Portal verwendet die öffentlich ausgelieferte Komuna-Gast-API. Der Import prüft die Gemeindeidentität und Mandant 32. Ausschließlich explizit öffentliche Sitzungsteile und nicht gesperrte Tagesordnungspunkte werden übernommen. Zwischen Aufrufen liegen 0,5 Sekunden Pause. Ein gescheiterter Abruf überschreibt den letzten Datenbestand nicht. Die API ist eine interne Anwendungsschnittstelle und kann sich ändern.
 
+Die Berichtszuordnung nutzt Datum, Gremium und Themenwörter aus TOP-Titeln und PDF-Texten. Ein verknüpfter Sitzungsbericht ist ein Quellenhinweis zur Sitzung; ein konkreter Beschlusshinweis wird nur angezeigt, wenn der Text zusätzlich zum TOP passt. Abstimmungshinweise sind reine Texterkennungen, zum Beispiel Zahlenverhältnisse oder Wörter wie „einstimmig“, und ersetzen keine juristische Prüfung.
+
 ## Struktur
 
-- `data/oberstaufen.json`: Quellenkennungen, Abrufzeit, Termine, öffentliche TOP und Berichtslinks.
+- `data/oberstaufen.json`: Quellenkennungen, Abrufzeit, Termine, öffentliche TOP, Berichtslinks, Beschlusshinweise und Abstimmungshinweise.
 - `docs/index.html`: eigenständiger lesbarer Index, ohne externe Bibliotheken.
 - `scripts/oberstaufen.py`: neuer Oberstaufen-Import und Berichtserzeugung.
 - `scripts/pruefen.py`, `tests/`: Datenkonsistenz und Schutz gegen Gemeindeverwechslungen/geschützte Tagesordnungsteile.
