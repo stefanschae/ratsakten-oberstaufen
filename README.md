@@ -1,10 +1,10 @@
 # Ratsakten Oberstaufen
 
-Öffentliche Tagesordnungen des Marktes Oberstaufen im Allgäu, ergänzt um Links zu amtlichen Sitzungsberichten. Technische Ableitung aus [Ratsakten Bad Waldsee – AmannLabs.eu](https://github.com/dominikamann/ratsakten-bad-waldsee).
+Öffentliche Tagesordnungen des Marktes Oberstaufen im Allgäu, ergänzt um Links zu amtlichen Sitzungsberichten, Beschlusshinweise, Abstimmungshinweise und statische Übersichtsseiten. Technische Ableitung aus [Ratsakten Bad Waldsee – AmannLabs.eu](https://github.com/dominikamann/ratsakten-bad-waldsee).
 
 ## Stand und Grenzen
 
-Erweiterter Datenstand ab 1. Januar 2024. `docs/index.html` zeigt den importierten Zeitraum und die tatsächlich erfassten Kennzahlen. Ein Kalendereintrag beweist nicht, dass eine Sitzung stattgefunden hat. Tagesordnungstitel belegen keine Beschlussergebnisse; Beschluss- und Abstimmungshinweise erscheinen nur, wenn ein maschinell lesbarer amtlicher PDF-Bericht ausreichend sicher zugeordnet werden konnte. Die zusätzlichen amtlichen Berichte umfassen auch andere Jahre und Versammlungen.
+Erweiterter Datenstand ab 1. Januar 2024. Die Seiten unter `docs/` zeigen den importierten Zeitraum und die tatsächlich erfassten Kennzahlen. Ein Kalendereintrag beweist nicht, dass eine Sitzung stattgefunden hat. Tagesordnungstitel belegen keine Beschlussergebnisse; Beschluss- und Abstimmungshinweise erscheinen nur, wenn ein maschinell lesbarer amtlicher PDF-Bericht ausreichend sicher zugeordnet werden konnte. Die zusätzlichen amtlichen Berichte umfassen auch andere Jahre und Versammlungen.
 
 Die Bad-Waldsee-Daten und Skripte bleiben unverändert unter `referenz_bad_waldsee/` als technische Referenz erhalten. Sie fließen nicht in die Oberstaufen-Ausgabe ein. Deren früherer Wochenlauf ist gemeindespezifisch und darf nicht für Oberstaufen verwendet werden.
 
@@ -37,7 +37,14 @@ Die Berichtszuordnung nutzt Datum, Gremium und Themenwörter aus TOP-Titeln und 
 ## Struktur
 
 - `data/oberstaufen.json`: Quellenkennungen, Abrufzeit, Termine, öffentliche TOP, Berichtslinks, Beschlusshinweise und Abstimmungshinweise.
-- `docs/index.html`: eigenständiger lesbarer Index, ohne externe Bibliotheken.
+- `docs/index.html`: Startseite mit Einstiegen.
+- `docs/termine.html`: alle Sitzungen mit öffentlichen Tagesordnungspunkten.
+- `docs/suche.html`: durchsuchbarer Index aller TOP, Hinweise und Abstimmungen.
+- `docs/gremien.html`: Aktivität nach Gremium.
+- `docs/befunde.html`: Datenlage, Abdeckung und Grenzen.
+- `docs/themen/`: wiederkehrende Vorgänge im Zeitverlauf.
+- `docs/ausgaben/`: Wochenarchiv der Aktenlage.
+- `data/csv/`: Tabellen zum Prüfen und Weiterverarbeiten.
 - `scripts/oberstaufen.py`: neuer Oberstaufen-Import und Berichtserzeugung.
 - `scripts/pruefen.py`, `tests/`: Datenkonsistenz und Schutz gegen Gemeindeverwechslungen/geschützte Tagesordnungsteile.
 - `referenz_bad_waldsee/`: unveränderte Referenz, keine Oberstaufen-Ergebnisse.

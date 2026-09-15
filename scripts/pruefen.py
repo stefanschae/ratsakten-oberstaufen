@@ -8,7 +8,7 @@ assert len({t['id'] for t in d['tagesordnungspunkte']})==len(d['tagesordnungspun
 assert all(t['sitzung_id'] in ids for t in d['tagesordnungspunkte'])
 assert all(d['von']<=m['datum']<=d['bis'] for m in d['sitzungen'])
 assert sum(m['n_tops'] for m in d['sitzungen'])==len(d['tagesordnungspunkte'])
-assert 'Ratsakten Oberstaufen' in page and 'Erweiterter Datenstand' in page
+assert 'Ratsakten Oberstaufen' in page and 'Ausgaben' in page and 'Themen' in page
 if 'auswertung' in d:
     assert d['auswertung']['tops_mit_berichtslink'] <= len(d['tagesordnungspunkte'])
     assert d['auswertung']['tops_mit_abstimmungshinweis'] <= d['auswertung']['tops_mit_beschlusshinweis']

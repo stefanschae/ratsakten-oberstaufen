@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Öffentliche Oberstaufen-Ratsdaten abrufen und einen belegbaren Index bauen."""
 import argparse
+import csv
 import base64
 import collections
 import datetime as dt
@@ -128,6 +129,125 @@ def vote_hint(text):
         if m:
             return clean_text(m.group(0))
     return None
+
+
+def slug(value):
+    value = clean_text(value).lower()
+    value = value.replace('ä','ae').replace('ö','oe').replace('ü','ue').replace('ß','ss')
+    value = re.sub(r'[^a-z0-9]+', '-', value).strip('-')
+    return value[:72] or 'seite'
+
+
+def page(title, body, nav=''):
+    nav_html = nav or '<nav><a href="index.html">Start</a><a href="termine.html">Termine</a><a href="suche.html">Suche</a><a href="gremien.html">Gremien</a><a href="themen/index.html">Themen</a><a href="ausgaben/index.html">Ausgaben</a><a href="befunde.html">Befunde</a></nav>'
+    return f'''<!doctype html><html lang="de"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{html.escape(title)}</title><style>
+:root{{color-scheme:light;--paper:#f7f5ef;--ink:#20392f;--muted:#58665f;--line:#ccd4cb;--accent:#175a43;--soft:#ebe8dc}}
+*{{box-sizing:border-box}}body{{margin:0;background:var(--paper);color:var(--ink);font:17px/1.65 system-ui,sans-serif}}main{{max-width:1080px;margin:auto;padding:28px 22px 48px}}nav{{display:flex;gap:14px;flex-wrap:wrap;border-bottom:1px solid var(--line);padding:0 0 18px;margin-bottom:34px}}nav a{{color:var(--accent);text-decoration:none;font-weight:650}}h1{{font-size:clamp(36px,6vw,68px);line-height:1.08;letter-spacing:0;margin:0 0 12px}}h2{{margin-top:42px}}h3{{margin-bottom:4px}}a{{color:var(--accent)}}small,.muted{{color:var(--muted)}}.eyebrow{{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700}}.stats{{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin:28px 0}}.stats>div{{border-top:3px solid #307153;background:white;padding:16px}}.stats b{{font-size:34px;display:block}}details,.row{{border-top:1px solid var(--line);padding:14px 0}}summary{{cursor:pointer;font-weight:650}}summary small{{float:right}}table{{border-collapse:collapse;width:100%;background:white}}td,th{{border-bottom:1px solid var(--line);padding:8px;text-align:left;vertical-align:top}}input{{width:100%;padding:12px;border:1px solid var(--line);font:inherit;background:white}}.note,.card{{background:var(--soft);padding:18px;border-left:4px solid #aa8743;margin:18px 0}}blockquote{{margin:10px 0;padding-left:14px;border-left:3px solid var(--line);color:#33483f}}.cards{{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px}}.card{{display:block;text-decoration:none;color:inherit;border-left:0;background:white;border-top:3px solid #307153}}@media(max-width:550px){{summary small{{float:none;display:block}}}}
+</style><main>{nav_html}{body}<footer><p class="muted">Privates Lernprojekt. Verbindlich sind ausschließlich die amtlichen Originalunterlagen des Marktes Oberstaufen.</p></footer></main></html>'''
+
+
+def topic_terms(item):
+    terms = [w for w in keywords(item.get('titel', '')) if not w.isdigit()]
+    banned = {'beschlussfassung','beschliessend','oberstaufen','gemarkung','bauantraege','bauantrag','sitzung'}
+    return [w for w in terms if w not in banned]
+
+
+def collect_topics(data):
+    groups = collections.defaultdict(list)
+    for item in data['tagesordnungspunkte']:
+        terms = topic_terms(item)
+        key = None
+        if item.get('vorlage'):
+            key = item['vorlage']
+        elif terms:
+            key = ' '.join(terms[:3])
+        if key:
+            groups[key].append(item)
+    topics = []
+    for key, items in groups.items():
+        if len(items) < 2 and not any(i.get('beschlusshinweis') for i in items):
+            continue
+        title = clean_text(items[0]['titel'])
+        topics.append({'key': key, 'titel': title, 'items': sorted(items, key=lambda x: x['datum'])})
+    return sorted(topics, key=lambda x: (len(x['items']), x['items'][-1]['datum']), reverse=True)
+
+
+def build_tables(data):
+    target = ROOT/'data/csv'
+    target.mkdir(parents=True, exist_ok=True)
+    def write(name, fields, rows):
+        with (target/name).open('w', encoding='utf-8-sig', newline='') as f:
+            writer = csv.DictWriter(f, fieldnames=fields, delimiter=';')
+            writer.writeheader(); writer.writerows(rows)
+    write('sitzungen.csv', ['datum','gremium','titel','tagesordnungspunkte','berichte','quelle'], [
+        {'datum':m['datum'],'gremium':m['gremium'],'titel':m['titel'],'tagesordnungspunkte':m['n_tops'],'berichte':len(m.get('berichte',[])),'quelle':m['api_quelle']} for m in data['sitzungen']])
+    write('tagesordnungspunkte.csv', ['datum','gremium','top','titel','beschlussstatus','berichte','beschlusshinweis','abstimmungshinweis'], [
+        {'datum':t['datum'],'gremium':t['gremium'],'top':t['top'],'titel':clean_text(t['titel']),'beschlussstatus':t.get('beschlussstatus',''),'berichte':len(t.get('bericht_links',[])),'beschlusshinweis':t.get('beschlusshinweis') or '','abstimmungshinweis':t.get('abstimmungshinweis') or ''} for t in data['tagesordnungspunkte']])
+    write('beschlusshinweise.csv', ['datum','gremium','top','titel','hinweis','abstimmungshinweis'], [
+        {'datum':t['datum'],'gremium':t['gremium'],'top':t['top'],'titel':clean_text(t['titel']),'hinweis':t.get('beschlusshinweis') or '','abstimmungshinweis':t.get('abstimmungshinweis') or ''} for t in data['tagesordnungspunkte'] if t.get('beschlusshinweis') or t.get('abstimmungshinweis')])
+
+
+def build_extra_pages(data):
+    docs = ROOT/'docs'
+    (docs/'themen').mkdir(parents=True, exist_ok=True)
+    (docs/'ausgaben').mkdir(parents=True, exist_ok=True)
+    build_tables(data)
+    aus = data.get('auswertung', {})
+    cards = ''.join(f'<div><b>{v}</b>{k}</div>' for k, v in [
+        ('Sitzungstermine', len(data['sitzungen'])), ('öffentliche TOP', len(data['tagesordnungspunkte'])),
+        ('Berichte/Anlagen', len(data['berichte'])), ('TOP mit Berichtslink', aus.get('tops_mit_berichtslink',0)),
+        ('Beschlusshinweise', aus.get('tops_mit_beschlusshinweis',0)), ('Abstimmungshinweise', aus.get('tops_mit_abstimmungshinweis',0))])
+    index_body = f'<p class="eyebrow">ALLGÄU · ÖFFENTLICHE RATSUNTERLAGEN</p><h1>Ratsakten Oberstaufen</h1><p>Eine lokale, nachprüfbare Auswertung öffentlicher Ratsunterlagen des Marktes Oberstaufen.</p><div class="stats">{cards}</div><div class="cards"><a class="card" href="termine.html"><h3>Termine</h3><p>Alle Sitzungen mit öffentlichen Tagesordnungspunkten.</p></a><a class="card" href="suche.html"><h3>Suche</h3><p>Durchsuchbarer Index aller TOP, Berichte und Hinweise.</p></a><a class="card" href="themen/index.html"><h3>Themen</h3><p>Wiederkehrende Vorgänge im Zeitverlauf.</p></a><a class="card" href="ausgaben/index.html"><h3>Ausgaben</h3><p>Wochenarchiv der Aktenlage.</p></a><a class="card" href="befunde.html"><h3>Befunde</h3><p>Was die Datenlage hergibt und wo Grenzen bleiben.</p></a><a class="card" href="gremien.html"><h3>Gremien</h3><p>Entscheidungskörper und erfasste Aktivität.</p></a></div><p class="note">Beschluss- und Abstimmungshinweise sind maschinell aus amtlichen PDF-Texten abgeleitet und am Original zu prüfen.</p>'
+    (docs/'index.html').write_text(page('Ratsakten Oberstaufen', index_body), encoding='utf-8')
+
+    by_meeting = collections.defaultdict(list)
+    for t in data['tagesordnungspunkte']: by_meeting[t['sitzung_id']].append(t)
+    term_body = '<h1>Termine</h1><p>Alle erfassten Sitzungstermine aus dem öffentlichen RIS.</p>'
+    for m in sorted(data['sitzungen'], key=lambda x:x['datum'], reverse=True):
+        term_body += f'<details><summary>{html.escape(m["datum"])} · {html.escape(m["gremium"])} <small>{m["n_tops"]} TOP</small></summary>'
+        if m.get('berichte'): term_body += '<p>' + ', '.join(f'<a href="{html.escape(b["url"],quote=True)}">{html.escape(b["titel"])}</a>' for b in m['berichte']) + '</p>'
+        term_body += '<ol>' + ''.join(f'<li><b>TOP {html.escape(t["top"])}</b> {html.escape(clean_text(t["titel"]))}</li>' for t in by_meeting[m['id']]) + '</ol></details>'
+    (docs/'termine.html').write_text(page('Termine · Ratsakten Oberstaufen', term_body), encoding='utf-8')
+
+    grem = collections.defaultdict(lambda:{'sitzungen':0,'tops':0,'berichte':0,'beschluss':0})
+    for m in data['sitzungen']:
+        g=grem[m['gremium']]; g['sitzungen']+=1; g['tops']+=m['n_tops']; g['berichte']+=len(m.get('berichte',[]))
+    for t in data['tagesordnungspunkte']:
+        if t.get('beschlusshinweis'): grem[t['gremium']]['beschluss']+=1
+    rows=''.join(f'<tr><td>{html.escape(k)}</td><td>{v["sitzungen"]}</td><td>{v["tops"]}</td><td>{v["berichte"]}</td><td>{v["beschluss"]}</td></tr>' for k,v in sorted(grem.items()))
+    (docs/'gremien.html').write_text(page('Gremien · Ratsakten Oberstaufen', f'<h1>Gremien</h1><table><tr><th>Gremium</th><th>Sitzungen</th><th>TOP</th><th>Berichte</th><th>Beschlusshinweise</th></tr>{rows}</table>'), encoding='utf-8')
+
+    search_rows = [{'datum':t['datum'],'gremium':t['gremium'],'top':t['top'],'titel':clean_text(t['titel']),'hinweis':t.get('beschlusshinweis') or '', 'abstimmung':t.get('abstimmungshinweis') or ''} for t in data['tagesordnungspunkte']]
+    search_json = json.dumps(search_rows, ensure_ascii=False)
+    search_body = f'<h1>Suche</h1><input id="q" placeholder="Suchbegriff eingeben"><div id="out"></div><script>const data={search_json};const q=document.getElementById("q"),out=document.getElementById("out");function draw(){{let s=q.value.toLowerCase();let rows=data.filter(x=>!s||Object.values(x).join(" ").toLowerCase().includes(s)).slice(0,250);out.innerHTML="<p>"+rows.length+" Treffer angezeigt</p>"+rows.map(x=>`<div class=row><b>${{x.datum}} · ${{x.gremium}} · TOP ${{x.top}}</b><br>${{x.titel}}${{x.hinweis?`<blockquote>${{x.hinweis}}</blockquote>`:""}}${{x.abstimmung?`<small>Abstimmung: ${{x.abstimmung}}</small>`:""}}</div>`).join("")}}q.addEventListener("input",draw);draw();</script>'
+    (docs/'suche.html').write_text(page('Suche · Ratsakten Oberstaufen', search_body), encoding='utf-8')
+
+    topics = collect_topics(data)[:60]
+    topic_cards = []
+    for topic in topics:
+        fname = slug(topic['key']) + '.html'
+        topic_cards.append(f'<a class="card" href="{fname}"><h3>{html.escape(topic["titel"][:110])}</h3><p>{len(topic["items"])} Stationen · {topic["items"][0]["datum"]} bis {topic["items"][-1]["datum"]}</p></a>')
+        rows = ''.join(f'<div class="row"><b>{html.escape(i["datum"])} · {html.escape(i["gremium"])} · TOP {html.escape(i["top"])}</b><p>{html.escape(clean_text(i["titel"]))}</p>' + (f'<blockquote>{html.escape(i["beschlusshinweis"])}</blockquote>' if i.get('beschlusshinweis') else '') + '</div>' for i in topic['items'])
+        nav = '<nav><a href="../index.html">Start</a><a href="index.html">Themen</a><a href="../suche.html">Suche</a></nav>'
+        (docs/'themen'/fname).write_text(page(topic['titel'], f'<h1>{html.escape(topic["titel"])}</h1>{rows}', nav), encoding='utf-8')
+    (docs/'themen/index.html').write_text(page('Themen · Ratsakten Oberstaufen', f'<h1>Themen</h1><p>Wiederkehrende oder mit Beschlusshinweisen belegte Vorgänge.</p><div class="cards">{"".join(topic_cards)}</div>', '<nav><a href="../index.html">Start</a><a href="../suche.html">Suche</a><a href="../termine.html">Termine</a></nav>'), encoding='utf-8')
+
+    weeks = collections.defaultdict(list)
+    for m in data['sitzungen']:
+        y,w,_ = dt.date.fromisoformat(m['datum']).isocalendar()
+        weeks[(y,w)].append(m)
+    archive = []
+    for (y,w), meetings in sorted(weeks.items(), reverse=True):
+        folder = docs/'ausgaben'/str(y); folder.mkdir(parents=True, exist_ok=True)
+        fname = f'kw{w:02d}.html'
+        archive.append((y,w,f'{y}/{fname}',len(meetings),sum(m['n_tops'] for m in meetings)))
+        content = f'<h1>Aktenlage KW {w}/{y}</h1>' + ''.join(f'<div class="row"><h3>{html.escape(m["datum"])} · {html.escape(m["gremium"])}</h3><p>{m["n_tops"]} öffentliche TOP · {len(m.get("berichte",[]))} Berichte</p></div>' for m in meetings)
+        (folder/fname).write_text(page(f'Aktenlage KW {w}/{y}', content, '<nav><a href="../../index.html">Start</a><a href="../index.html">Ausgaben</a></nav>'), encoding='utf-8')
+    arch_rows = ''.join(f'<tr><td><a href="{p}">KW {w}/{y}</a></td><td>{n}</td><td>{tops}</td></tr>' for y,w,p,n,tops in archive)
+    (docs/'ausgaben/index.html').write_text(page('Ausgaben · Ratsakten Oberstaufen', f'<h1>Ausgaben</h1><table><tr><th>Ausgabe</th><th>Sitzungen</th><th>TOP</th></tr>{arch_rows}</table>', '<nav><a href="../index.html">Start</a><a href="../termine.html">Termine</a></nav>'), encoding='utf-8')
+
+    bef = f'<h1>Befunde</h1><div class="stats">{cards}</div><div class="note"><b>Datenlage:</b> Es gibt amtliche Sitzungsberichte vor allem für den Marktgemeinderat. Ausschüsse und Sitzungen ohne Bericht bleiben im RIS sichtbar, aber ohne belastbaren Beschlussauszug.</div><div class="note"><b>Grenze:</b> Eine maschinelle Zuordnung ersetzt keine Prüfung im Original-PDF. Fehlende Abstimmungshinweise bedeuten nicht, dass keine Abstimmung stattfand.</div>'
+    (docs/'befunde.html').write_text(page('Befunde · Ratsakten Oberstaufen', bef), encoding='utf-8')
 
 
 def enrich_decisions(data):
@@ -275,5 +395,6 @@ def main():
         target = ROOT/'data/oberstaufen.json'; temp = target.with_suffix('.tmp')
         temp.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding='utf-8'); temp.replace(target)
     build(data)
+    build_extra_pages(data)
 
 if __name__=='__main__':main()
