@@ -32,6 +32,11 @@ Der Lauf aktualisiert lokale Dateien. GitHub Desktop zeigt die Änderungen zur �
 
 Das Portal verwendet die öffentlich ausgelieferte Komuna-Gast-API. Der Import prüft die Gemeindeidentität und Mandant 32. Ausschließlich explizit öffentliche Sitzungsteile und nicht gesperrte Tagesordnungspunkte werden übernommen. Zwischen Aufrufen liegen 0,5 Sekunden Pause. Ein gescheiterter Abruf überschreibt den letzten Datenbestand nicht. Die API ist eine interne Anwendungsschnittstelle und kann sich ändern.
 
+Die amtlichen Berichte sind nach Sitzungen gegliedert, nicht nach Tagesordnungspunkten. Ein Auszug kann
+deshalb einen ganzen Tagesordnungsblock abdecken und maschinell mehreren Unterpunkten zugeordnet werden;
+im Report erscheint jede Textstelle nur einmal. Welcher Satz zu welchem Unterpunkt gehört, ist im
+verlinkten PDF zu prüfen.
+
 Die Berichtszuordnung nutzt Datum, Gremium und Themenwörter aus TOP-Titeln und PDF-Texten. Ein verknüpfter Sitzungsbericht ist ein Quellenhinweis zur Sitzung; ein konkreter Beschlusshinweis wird nur angezeigt, wenn der Text zusätzlich zum TOP passt. Abstimmungshinweise sind reine Texterkennungen, zum Beispiel Zahlenverhältnisse oder Wörter wie „einstimmig“, und ersetzen keine juristische Prüfung.
 
 ## Struktur
@@ -41,13 +46,21 @@ Die Berichtszuordnung nutzt Datum, Gremium und Themenwörter aus TOP-Titeln und 
 - `docs/termine.html`: alle Sitzungen mit öffentlichen Tagesordnungspunkten.
 - `docs/suche.html`: durchsuchbarer Index aller TOP, Hinweise und Abstimmungen.
 - `docs/gremien.html`: Aktivität nach Gremium.
-- `docs/befunde.html`: Datenlage, Abdeckung und Grenzen.
+- `docs/befunde.html`: Erkenntnisse — belegbare Befunde und die Stellen, an denen die Aktenlage nichts hergibt.
+- `docs/report/`: Dreijahresbericht über den gesamten erfassten Zeitraum, mit Diagrammen und den auffälligsten Tagesordnungspunkten.
 - `docs/themen/`: wiederkehrende Vorgänge im Zeitverlauf.
 - `docs/ausgaben/`: Wochenarchiv der Aktenlage.
 - `data/csv/`: Tabellen zum Prüfen und Weiterverarbeiten.
 - `scripts/oberstaufen.py`: neuer Oberstaufen-Import und Berichtserzeugung.
 - `scripts/pruefen.py`, `tests/`: Datenkonsistenz und Schutz gegen Gemeindeverwechslungen/geschützte Tagesordnungsteile.
 - `referenz_bad_waldsee/`: unveränderte Referenz, keine Oberstaufen-Ergebnisse.
+
+## Navigation
+
+Alle Seiten tragen dieselbe Leiste in der Reihenfolge der Vorlage: Startseite, Termine, Themen, Suche,
+Erkenntnisse, Archiv, Wer entscheidet was. Erzeugt wird sie aus `NAVIGATION` in `scripts/oberstaufen.py`;
+`scripts/pruefen.py` bricht ab, wenn eine Seite abweicht oder ein Ziel nicht existiert. Report und
+Erkenntnisse sind zusätzlich von der Startseite aus verlinkt.
 
 ## Herkunft und Lizenzen
 
