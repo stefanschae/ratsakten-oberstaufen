@@ -55,6 +55,25 @@ Die Berichtszuordnung nutzt Datum, Gremium und Themenwörter aus TOP-Titeln und 
 - `scripts/pruefen.py`, `tests/`: Datenkonsistenz und Schutz gegen Gemeindeverwechslungen/geschützte Tagesordnungsteile.
 - `referenz_bad_waldsee/`: unveränderte Referenz, keine Oberstaufen-Ergebnisse.
 
+## Personenschutz
+
+Die amtlichen Berichte nennen Namen: den Ersten Bürgermeister, ehrenamtliche Beauftragte, komplette
+Ausschussbesetzungen und externe Prüfer. Diese Seiten geben keine Personennamen wieder — auch dann nicht,
+wenn sie öffentlich abrufbar sind.
+
+- **Tagesordnungstitel** bleiben lesbar; der Name darin wird durch Initialen ersetzt
+  („Vereidigung von Herrn M. R. als Mitglied des Marktgemeinderates").
+- **Beschlussauszüge** mit erkennbarem Personenbezug werden gar nicht wiedergegeben. Statt des Zitats
+  steht ein Hinweis, der Link auf das amtliche PDF bleibt. Das betrifft 54 der 239 zugeordneten Auszüge.
+- **Abstimmungshinweise** („einstimmig", „16:1") bleiben erhalten, sie tragen keinen Namen.
+
+Die Erkennung arbeitet über Rollenbezeichnungen mit folgendem Namen, Vertretungsklammern und
+Fraktionszuordnungen; verglichen wird ohne Leerzeichen, damit Trennfehler der PDF-Extraktion nicht
+durchrutschen. Sie fällt im Zweifel zugunsten des Zurückhaltens aus — ein verlorener Auszug ist der
+günstigere Fehler. Die Bereinigung geschieht vor dem Speichern, sodass auch `data/oberstaufen.json` und
+die CSV-Tabellen frei von Namen sind. `scripts/pruefen.py` wendet die Muster erneut auf jede
+ausgelieferte Datei an und bricht ab, wenn dort noch eine Personennennung steht.
+
 ## Navigation
 
 Alle Seiten tragen dieselbe Leiste in der Reihenfolge der Vorlage: Startseite, Termine, Themen, Suche,

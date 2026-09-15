@@ -59,5 +59,38 @@ assert f'report/{berichte[0].name}' in befunde, 'Erkenntnisse verlinken den Repo
 assert f'<b>{len(d["sitzungen"])}</b>' in report
 assert f'<b>{len(d["tagesordnungspunkte"])}</b>' in report
 
+# --- Personenschutz: keine Personennennung in der Ausgabe -------------------
+import importlib.util
+spec = importlib.util.spec_from_file_location('gen', r / 'scripts/oberstaufen.py')
+gen = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(gen)
+
+# Nicht gegen die bereits bereinigten Daten pruefen — das pruefte sich selbst.
+# Stattdessen die Erkennungsmuster erneut auf alles anwenden, was ausgeliefert
+# wird. Findet ein Muster dort noch eine Rolle mit folgendem Namen, eine
+# Vertretungsklammer oder eine Fraktionszuordnung, ist die Schwaerzung undicht.
+MUSTER = [('Rolle mit Namen', gen.PERSON), ('Vertretungsklammer', gen.VERTRETUNG),
+          ('Fraktion mit Namen', gen.FRAKTION), ('Name mit Fraktion', gen.NAME_PARTEI)]
+
+veroeffentlicht = [(seite.relative_to(r), seite.read_text(encoding='utf-8')) for seite in seiten]
+veroeffentlicht.append((Path('data/oberstaufen.json'), (r / 'data/oberstaufen.json').read_text(encoding='utf-8')))
+for tabelle in sorted((r / 'data/csv').glob('*.csv')):
+    veroeffentlicht.append((tabelle.relative_to(r), tabelle.read_text(encoding='utf-8-sig')))
+
+treffer = []
+for pfad, text in veroeffentlicht:
+    for bezeichnung, muster in MUSTER:
+        for fund in muster.finditer(text):
+            treffer.append(f'{pfad}: {bezeichnung} — {fund.group(0)[:60]!r}')
+assert not treffer, 'Personenbezug in der Ausgabe:\n  ' + '\n  '.join(treffer[:8])
+
+zurueck = sum(1 for t in d['tagesordnungspunkte'] if t.get('beschlusshinweis_zurueckgehalten'))
+assert zurueck == d['auswertung'].get('tops_mit_zurueckgehaltenem_hinweis')
+assert not any(t.get('beschlusshinweis') and t.get('beschlusshinweis_zurueckgehalten')
+               for t in d['tagesordnungspunkte']), 'Auszug trotz Zurueckhaltung gespeichert'
+
+print(f"Personenschutz: {zurueck} Auszüge zurückgehalten, "
+      f"kein Personenbezug in {len(veroeffentlicht)} ausgelieferten Dateien")
+
 print(f"Geprüft: {len(ids)} Termine, {len(d['tagesordnungspunkte'])} TOP, "
       f"{len(d['berichte'])} Berichte/Anlagen, {len(seiten)} Seiten, Report {berichte[0].name}")

@@ -229,7 +229,11 @@ def build_extra_pages(data):
     for m in sorted(data['sitzungen'], key=lambda x:x['datum'], reverse=True):
         term_body += f'<details><summary>{html.escape(m["datum"])} · {html.escape(m["gremium"])} <small>{m["n_tops"]} TOP</small></summary>'
         if m.get('berichte'): term_body += '<p>' + ', '.join(f'<a href="{html.escape(b["url"],quote=True)}">{html.escape(b["titel"])}</a>' for b in m['berichte']) + '</p>'
-        term_body += '<ol>' + ''.join(f'<li><b>TOP {html.escape(t["top"])}</b> {html.escape(clean_text(t["titel"]))}</li>' for t in by_meeting[m['id']]) + '</ol></details>'
+        term_body += '<ol>' + ''.join(
+            f'<li><b>TOP {html.escape(t["top"])}</b> {html.escape(clean_text(t["titel"]))}'
+            + ('<br><small>Auszug enthält Personennamen und wird nicht angezeigt; Fundstelle im amtlichen Bericht.</small>'
+               if t.get('beschlusshinweis_zurueckgehalten') else '')
+            + '</li>' for t in by_meeting[m['id']]) + '</ol></details>'
     (docs/'termine.html').write_text(page('Termine · Ratsakten Oberstaufen', term_body, current='termine'), encoding='utf-8')
 
     grem = collections.defaultdict(lambda:{'sitzungen':0,'tops':0,'berichte':0,'beschluss':0})
@@ -313,7 +317,7 @@ def enrich_decisions(data):
         'tops_mit_beschlusshinweis': sum(1 for t in data['tagesordnungspunkte'] if t.get('beschlusshinweis')),
         'tops_mit_abstimmungshinweis': sum(1 for t in data['tagesordnungspunkte'] if t.get('abstimmungshinweis')),
     }
-    return data
+    return namen_schuetzen(data)
 
 
 class ReportLinks(HTMLParser):
@@ -367,6 +371,125 @@ def fetch(start, end, enrich=False):
     return result
 
 
+
+# ---------------------------------------------------------------------------
+# Personenschutz. Die amtlichen Berichte nennen Namen — Amtstraeger, aber auch
+# ehrenamtliche Beauftragte, Wirtschaftspruefer und Ausschussbesetzungen. Die
+# Auszuege werden deshalb vor dem Speichern geprueft: Wo ein Personenbezug
+# erkennbar ist, wird der Auszug zurueckgehalten und nur die Fundstelle
+# verlinkt. Der Abstimmungshinweis ("einstimmig", "16:1") bleibt, er traegt
+# keinen Namen. Die Erkennung faellt im Zweifel zugunsten des Zurueckhaltens
+# aus; ein verlorener Auszug ist der guenstigere Fehler.
+# ---------------------------------------------------------------------------
+
+_ROLLE = (r'(?:Herrn?|Frau|B\s?[üu]\s?rg\s?e\s?r\s?m\s?e\s?i\s?s\s?t\s?e\s?r(?:in)?|'
+          r'Gesch[äa]\s?ftsf[üu]\s?hrer(?:in)?|Wirtschaftspr[üu]\s?fe\s?r(?:in)?|'
+          r'Standesbe\s?amt\w*|Kassenverwalter\w*|K[äa]mmerer|Architekt\w*|Ingenieur\w*|'
+          r'Rechtsanwalt\w*|Rechtsanw[äa]ltin|Notar\w*|Vorsitzende\w*|Fraktionsvorsitz\w*|'
+          r'Vereidigung\s+von|Dr\.)')
+_FUELLWORT = (r'(?:der|die|das|den|dem|des|ein\w*|in|im|am|an|auf|aus|als|und|oder|zum|zur|zu|'
+              r'von|vom|mit|bei|f[üu]r|nach|vor|[üu]ber|wurde|wird|ist|war|sowie|gem[äa][ßs]\w*)')
+_WORT = r'[A-ZÄÖÜ][a-zäöüß]+(?:\s(?!' + _FUELLWORT + r'\b)[a-zäöüß]+)?'
+_NAME = _WORT + r'\s+' + _WORT
+_PARTEI = r'(?:CSU|SPD|FDP|FWO|UTL|PLW|Freie[nr]?\s+W[äa]hler|Gr[üu]ne\w*)'
+
+PERSON = re.compile('(' + _ROLLE + r')\W{0,12}(' + _NAME + ')')
+VERTRETUNG = re.compile('(' + _NAME + r')\s*\(\s*(' + _NAME + r')\s*\)')
+FRAKTION = re.compile(_PARTEI + r'\W{0,6}(' + _NAME + ')')
+NAME_PARTEI = re.compile('(' + _NAME + r')\s*\(\s*' + _PARTEI)
+
+# Zusammengezogene Satzfragmente, die wie ein Name aussehen, aber keiner sind.
+KEINE_NAMEN = re.compile(
+    r'(?:^|(?<=[a-zäöüß]))(?:der|die|das|dem|den|des|und|oder|f[üu]r|von|vom|mit|bei|'
+    r'wurde|wird|rief|beschloss|marktgemeinderat|gemeinde|markt|baugenehmigung|'
+    r'legislaturperiode|sitzung|ausschuss|tagesordnung|verwaltung)(?=[a-zäöüß]|$)', re.I)
+
+# Anreden und Amtsbezeichnungen, die als Wortpaar wie ein Name aussehen.
+KEINE_ROLLEN = re.compile(
+    r'^(?:herrn?|frau|erste[rmn]?|zweite[rmn]?|dritte[rmn]?|b[üu]rgermeister\w*|'
+    r'gesch[äa]ftsf[üu]hrer\w*|wirtschaftspr[üu]fer\w*|standesbeamt\w*|'
+    r'vorsitzende\w*|stellvertret\w*|mitglied\w*|kassenverwalter\w*)', re.I)
+
+
+def ohne_leer(text):
+    """Vergleichsform ohne Leerzeichen: faengt Trennfehler der PDF-Extraktion ab."""
+    return re.sub(r'\s+', '', text or '')
+
+
+def namen_sammeln(texte):
+    """Erste Runde: Personennamen aus den eindeutigen Mustern einsammeln."""
+    gefunden = set()
+    for text in texte:
+        for treffer in PERSON.finditer(text):
+            gefunden.add(treffer.group(2))
+        for treffer in VERTRETUNG.finditer(text):
+            gefunden.add(treffer.group(1))
+            gefunden.add(treffer.group(2))
+        for treffer in FRAKTION.finditer(text):
+            gefunden.add(treffer.group(1))
+        for treffer in NAME_PARTEI.finditer(text):
+            gefunden.add(treffer.group(1))
+    sauber = {}
+    for name in gefunden:
+        kompakt = ohne_leer(name)
+        if len(kompakt) > 7 and not KEINE_NAMEN.search(kompakt) and not KEINE_ROLLEN.match(kompakt):
+            sauber.setdefault(kompakt, ' '.join(name.split()))
+    return sauber
+
+
+def personenbezug(text, namen):
+    """Zweite Runde: Muster oder ein bereits erkannter Name irgendwo im Text."""
+    if not text:
+        return False
+    if (PERSON.search(text) or VERTRETUNG.search(text)
+            or FRAKTION.search(text) or NAME_PARTEI.search(text)):
+        return True
+    kompakt = ohne_leer(text)
+    return any(name in kompakt for name in namen)
+
+
+def initialen(name):
+    return ' '.join(wort[0] + '.' for wort in name.split() if wort)
+
+
+def namen_ersetzen(text, namen):
+    """Namen im Text durch Initialen ersetzen. \s* faengt PDF-Trennfehler ab."""
+    if not text:
+        return text
+    for kompakt, original in sorted(namen.items(), key=lambda x: -len(x[0])):
+        muster = re.compile(r'\s*'.join(re.escape(z) for z in kompakt))
+        text = muster.sub(initialen(original), text)
+    return text
+
+
+def namen_schuetzen(data):
+    """Auszuege mit Personenbezug zurueckhalten, bevor irgendetwas geschrieben wird."""
+    tops = data['tagesordnungspunkte']
+    quellen = [t['beschlusshinweis'] for t in tops if t.get('beschlusshinweis')]
+    quellen += [t.get('titel') or '' for t in tops]
+    namen = namen_sammeln(quellen)
+    # Tagesordnungstitel bleiben lesbar: dort stehen statt des Namens die Initialen.
+    for item in tops:
+        item['titel'] = namen_ersetzen(item['titel'], namen)
+    for sitzung in data.get('sitzungen', []):
+        sitzung['titel'] = namen_ersetzen(sitzung.get('titel'), namen)
+    for bericht in data.get('berichte', []):
+        bericht['titel'] = namen_ersetzen(bericht.get('titel'), namen)
+    # Mehrfach ausfuehrbar: die Markierung eines bereits zurueckgehaltenen
+    # Auszugs bleibt stehen, auch wenn der Text laengst entfernt ist.
+    zurueckgehalten = 0
+    for item in tops:
+        if personenbezug(item.get('beschlusshinweis'), namen):
+            item['beschlusshinweis'] = None
+            item['beschlusshinweis_zurueckgehalten'] = True
+        if item.get('beschlusshinweis_zurueckgehalten'):
+            zurueckgehalten += 1
+    data.setdefault('auswertung', {})
+    data['auswertung']['tops_mit_beschlusshinweis'] = sum(
+        1 for t in tops if t.get('beschlusshinweis'))
+    data['auswertung']['tops_mit_zurueckgehaltenem_hinweis'] = zurueckgehalten
+    return data
+
 # ---------------------------------------------------------------------------
 # Auswertung über den gesamten Zeitraum: Kennzahlen, Dreijahresbericht,
 # Erkenntnisseite. Alle Zahlen werden aus data/oberstaufen.json gerechnet,
@@ -412,6 +535,12 @@ def kennzahlen(data):
     k['beschliessend'] = sum(k['beschliessend_je_gremium'].values())
     k['hinweise_je_gremium'] = collections.Counter(t['gremium'] for t in T if t.get('beschlusshinweis'))
     k['hinweise'] = sum(k['hinweise_je_gremium'].values())
+    # Ein zurueckgehaltener Auszug bleibt ein Beleg; er wird nur nicht zitiert.
+    k['zurueckgehalten'] = sum(1 for t in T if t.get('beschlusshinweis_zurueckgehalten'))
+    k['belege_je_gremium'] = collections.Counter(
+        t['gremium'] for t in T
+        if t.get('beschlusshinweis') or t.get('beschlusshinweis_zurueckgehalten'))
+    k['belege'] = sum(k['belege_je_gremium'].values())
 
     # Wie viele Sitzungen eines Gremiums haben überhaupt einen amtlichen Bericht?
     k['abdeckung'] = {}
@@ -527,7 +656,7 @@ def build_report(data, k):
     jahre = ' bis '.join([k['von'][:4], k['bis'][:4]])
     anteil_bua = round(100 * k['tops_je_gremium'].get('Bau- und Umweltausschuss', 0) / max(k['tops'], 1))
     anteil_einstimmig = round(100 * k['einstimmig'] / max(k['abstimmungen'], 1))
-    beleg_quote = round(100 * k['hinweise'] / max(k['beschliessend'], 1))
+    beleg_quote = round(100 * k['belege'] / max(k['beschliessend'], 1))
     mgr_mit, mgr_ges = k['abdeckung'].get('Marktgemeinderat', (0, 0))
 
     b = [f'<p class="eyebrow">Report · Vollauswertung {jahre}</p>',
@@ -540,7 +669,7 @@ def build_report(data, k):
          f'<div><b>{k["tops"]}</b>öffentliche TOP</div>'
          f'<div><b>{len(k["gremien"])}</b>Gremien</div>'
          f'<div><b>{k["beschliessend"]}</b>beschließende TOP</div>'
-         f'<div><b>{k["hinweise"]}</b>Beschlussbelege</div>'
+         f'<div><b>{k["belege"]}</b>Beschlussbelege</div>'
          f'<div><b>{k["abstimmungen"]}</b>Abstimmungsbelege</div></div>']
 
     b.append('<h2 class="kap">Woher die Daten stammen</h2>')
@@ -565,14 +694,18 @@ def build_report(data, k):
              '<li>Die Berichte sind nach Sitzungen gegliedert, nicht nach Tagesordnungspunkten. Ein '
              'Auszug kann deshalb einen ganzen Block abdecken und maschinell mehreren Unterpunkten '
              'zugeordnet worden sein. Welcher Satz zu welchem Unterpunkt gehört, ist im verlinkten '
-             'PDF zu prüfen.</li></ul>')
+             'PDF zu prüfen.</li>'
+             '<li>Auszüge, die Personennamen enthalten, werden nicht wiedergegeben — auch dann '
+             'nicht, wenn sie öffentlich abrufbar sind. Verlinkt ist in diesen Fällen nur die '
+             'Fundstelle im amtlichen Bericht.</li></ul>')
 
     b.append('<h2 class="kap">Wo Beschlüsse nachlesbar sind — und wo nicht</h2>')
     b.append(f'<p>Das ist der zentrale Befund dieses Zeitraums. Von {k["beschliessend"]} Tagesordnungspunkten, '
-             f'die als beschließend angekündigt waren, ließ sich zu {k["hinweise"]} ein amtlicher Textbeleg '
-             f'finden — {beleg_quote} Prozent. {marke("gezaehlt")}</p>')
+             f'die als beschließend angekündigt waren, ließ sich zu {k["belege"]} ein amtlicher Textbeleg '
+             f'finden — {beleg_quote} Prozent. {marke("gezaehlt")} Bei {k["zurueckgehalten"]} davon nennt '
+             f'der Auszug Personennamen; diese Stellen sind hier nur verlinkt, nicht zitiert.</p>')
     b.append(f'<p>Entscheidend ist aber nicht die Quote, sondern ihre Verteilung: '
-             f'<strong>Alle {k["hinweise"]} Belege betreffen den Marktgemeinderat.</strong> Für die '
+             f'<strong>Alle {k["belege"]} Belege betreffen den Marktgemeinderat.</strong> Für die '
              f'Ausschüsse gibt es keinen einzigen. {marke("gezaehlt")}</p>')
     b.append(balken([(g, k['abdeckung'][g][0], f'von {k["abdeckung"][g][1]} Sitzungen')
                      for g in k['gremien']], hervor={'Marktgemeinderat'}))
@@ -674,6 +807,9 @@ def build_report(data, k):
                  f'<p>{e(clean_text(t["titel"]))}</p>')
         if t.get('beschlusshinweis'):
             b.append(f'<blockquote>{e(t["beschlusshinweis"])}</blockquote>')
+        elif t.get('beschlusshinweis_zurueckgehalten'):
+            b.append('<p class="muted">Der amtliche Auszug zu diesem Punkt nennt Personennamen und '
+                     'wird hier nicht wiedergegeben. Die Fundstelle ist unten verlinkt.</p>')
         if t.get('abstimmungshinweis'):
             b.append(f'<small>Abstimmungshinweis: {e(t["abstimmungshinweis"])}</small>')
         if t.get('bericht_links'):
@@ -725,7 +861,7 @@ def build_befunde(data, k, report_pfad):
     r = report_pfad
     anteil_bua = round(100 * k['tops_je_gremium'].get('Bau- und Umweltausschuss', 0) / max(k['tops'], 1))
     anteil_einstimmig = round(100 * k['einstimmig'] / max(k['abstimmungen'], 1))
-    beleg_quote = round(100 * k['hinweise'] / max(k['beschliessend'], 1))
+    beleg_quote = round(100 * k['belege'] / max(k['beschliessend'], 1))
     mgr_mit, mgr_ges = k['abdeckung'].get('Marktgemeinderat', (0, 0))
     bua = 'Bau- und Umweltausschuss'
 
@@ -741,7 +877,7 @@ def build_befunde(data, k, report_pfad):
          f'<div class="stats"><div><b>{k["sitzungen"]}</b>Sitzungen</div>'
          f'<div><b>{k["tops"]}</b>öffentliche TOP</div>'
          f'<div><b>{k["beschliessend"]}</b>beschließende TOP</div>'
-         f'<div><b>{k["hinweise"]}</b>Beschlussbelege</div>'
+         f'<div><b>{k["belege"]}</b>Beschlussbelege</div>'
          f'<div><b>{k["abstimmungen"]}</b>Abstimmungsbelege</div>'
          f'<div><b>{k["berichte"]}</b>amtliche Berichte</div></div>']
 
@@ -768,7 +904,7 @@ def build_befunde(data, k, report_pfad):
     b.append('<h2>Beobachtungen</h2>')
     b.append(eintrag(
         'Kein einziger Beschlussbeleg stammt aus einem Ausschuss',
-        f'Alle {k["hinweise"]} belegten Beschlüsse betreffen den Marktgemeinderat. Für '
+        f'Alle {k["belege"]} belegten Beschlüsse betreffen den Marktgemeinderat. Für '
         f'{bua}, Haupt- und Finanzausschuss, Tourismusausschuss, Rechnungsprüfungsausschuss und '
         f'Schulverbandsversammlung gibt es zusammen keinen einzigen. Das ist die größte Lücke im '
         f'Bestand.', 'deutung'))
@@ -792,7 +928,7 @@ def build_befunde(data, k, report_pfad):
         f'Beschlussvorschläge sind über den öffentlichen Weg nicht erreichbar.'))
     b.append(eintrag(
         f'Nur {beleg_quote} Prozent der beschließenden Punkte sind belegt',
-        f'{k["hinweise"]} von {k["beschliessend"]} — der Rest ist als beschließend angekündigt, aber '
+        f'{k["belege"]} von {k["beschliessend"]} — der Rest ist als beschließend angekündigt, aber '
         f'ohne öffentlich abrufbares Ergebnis. Fehlende Belege bedeuten nicht, dass nichts entschieden '
         f'wurde.'))
     if k['mit_gegenstimmen']:
@@ -809,6 +945,13 @@ def build_befunde(data, k, report_pfad):
         f'Tagesordnungspunkt musste dieses Projekt selbst herstellen — sie ist ein Fundstellenhinweis '
         f'und am Original zu prüfen.'))
 
+    if k['zurueckgehalten']:
+        b.append(eintrag(
+            f'{k["zurueckgehalten"]} Auszüge werden wegen Personennamen nicht wiedergegeben',
+            f'Die amtlichen Berichte nennen neben dem Ersten Bürgermeister auch ehrenamtliche '
+            f'Beauftragte, Ausschussbesetzungen und externe Prüfer. Diese Auszüge sind hier nur '
+            f'verlinkt, nicht zitiert — auch wenn sie öffentlich abrufbar sind. Der Beleg bleibt '
+            f'nachprüfbar, die Namen stehen nicht auf diesen Seiten.'))
     b.append('<h2>Aus der Gesamtauswertung</h2>')
     b.append(f'<p>Der <a href="{e(r)}">Dreijahresbericht</a> führt diese Punkte zusammen: Herkunft der '
              f'Daten, Verteilung der Beschlussbelege über die Gremien, Themenschwerpunkte, '
@@ -843,8 +986,10 @@ def main():
     start=dt.date.fromisoformat(args.von);end=dt.date.fromisoformat(args.bis)
     if start>end or end>dt.date.today():parser.error('Ungültiger Zeitraum oder zukünftiger Stichtag')
     data=json.loads((ROOT/'data/oberstaufen.json').read_text()) if args.offline else fetch(start.isoformat(),end.isoformat(), args.auswerten)
-    if args.offline and args.auswerten:
-        data = enrich_decisions(data)
+    if args.offline:
+        # Auch ein reiner Neubau bereinigt den gespeicherten Stand: sonst bliebe
+        # ein aelterer Bestand mit Personennamen im Repository liegen.
+        data = enrich_decisions(data) if args.auswerten else namen_schuetzen(data)
         target = ROOT/'data/oberstaufen.json'; temp = target.with_suffix('.tmp')
         temp.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding='utf-8'); temp.replace(target)
     build_extra_pages(data)
